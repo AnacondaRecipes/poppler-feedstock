@@ -11,38 +11,33 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 0
-  detect_binary_files_with_prefix: true
-  skip: true  # [win or not py36]
+  number: 3
 
 requirements:
   build:
+    - {{ compiler('cxx') }}
+    - {{ cdt('libx11-devel') }}          # [linux]
+    - {{ cdt('libxrender-devel') }}      # [linux]
+    - {{ cdt('libxau-devel') }}          # [linux]
+    - {{ cdt('libxext-devel') }}         # [linux]
     - pkg-config  # [not win]
-    - cmake 3.9.6
-    - toolchain
     - python
-    - perl 5.22.2.1
+    - perl
     - cairo 1.14.*
-    - curl >=7.44.0,<8
-    - freetype 2.8.*
-    - glib 2.55.*
-    - gobject-introspection 1.55.*
-    - jpeg 9*
-    - libpng >=1.6.32,<1.6.35
-    - libtiff >=4.0.8,<4.0.10
-    - openjpeg 2.3.*
-    - zlib 1.2.11
+    - curl
+    - freetype
+    - glib
+    - gobject-introspection >=1.51,<2.0a0
+    - jpeg
+    - libpng
+    - libtiff
+    # - openjpeg 2.1.*
+    - zlib
   run:
     - poppler-data
     - cairo 1.14.*
-    - curl >=7.44.0,<8
-    - freetype 2.8.*
-    - glib 2.55.*
-    - jpeg 9*
-    - libpng >=1.6.32,<1.6.35
-    - libtiff >=4.0.8,<4.0.10
-    - openjpeg 2.3.*
-    - zlib 1.2.11
+    - curl
+    # - openjpeg 2.1.*
 
 test:
   commands:
