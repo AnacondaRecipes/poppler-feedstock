@@ -12,21 +12,26 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 3
-  detect_binary_files_with_prefix: true
-  skip: True  # [win or not py36]
+  number: 4
+  skip: True  # [win]
+  run_exports:
+    # add new symbols often.  Don't remove symbols often at all.  Keeping default.
+    #   https://abi-laboratory.pro/tracker/timeline/poppler/
+    - {{ pin_subpackage('poppler') }}
 
 requirements:
   build:
     - {{ compiler('cxx') }}
+    # version spec here is so we don't loop over variants for python.  It is only a build tool.
+    - python   3.6.*
+    - perl
+  host:
     - {{ cdt('libx11-devel') }}          # [linux]
     - {{ cdt('libxrender-devel') }}      # [linux]
     - {{ cdt('libxau-devel') }}          # [linux]
     - {{ cdt('libxext-devel') }}         # [linux]
     - pkg-config  # [not win]
-    - python
-    - perl
-    - cairo 1.14.*
+    - cairo
     - curl
     - freetype
     - glib
@@ -34,13 +39,11 @@ requirements:
     - jpeg
     - libpng
     - libtiff
-    # - openjpeg 2.1.*
+    - openjpeg
     - zlib
   run:
     - poppler-data
-    - cairo 1.14.*
     - curl
-    # - openjpeg 2.1.*
 
 test:
   commands:
