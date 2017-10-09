@@ -1,18 +1,17 @@
 {% set name = "poppler" %}
-{% set version = "0.52.0" %}
-{% set sha256 = "528b661738839f9a25f6e580fcd2d5db007e0a1948580c6489f0062798ca1992" %}
+{% set version = "0.60.1" %}
+{% set sha256 = "19f185e05c3b59b4a1de2cec8ef39f5446035493d17bbed41d02fb9a77c8a93c" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  fn: {{ name }}-{{ version }}.tar.xz
   url: https://poppler.freedesktop.org/{{ name }}-{{ version }}.tar.xz
   sha256: {{ sha256 }}
 
 build:
-  number: 4
+  number: 0
   skip: True  # [win]
   run_exports:
     # add new symbols often.  Don't remove symbols often at all.  Keeping default.
@@ -21,16 +20,14 @@ build:
 
 requirements:
   build:
+    - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    # version spec here is so we don't loop over variants for python.  It is only a build tool.
-    - python   3.6.*
-    - perl
+    - cmake
   host:
     - {{ cdt('libx11-devel') }}          # [linux]
     - {{ cdt('libxrender-devel') }}      # [linux]
     - {{ cdt('libxau-devel') }}          # [linux]
     - {{ cdt('libxext-devel') }}         # [linux]
-    - pkg-config  # [not win]
     - cairo
     - curl
     - freetype
@@ -39,10 +36,10 @@ requirements:
     - jpeg
     - libpng
     - libtiff
-    - openjpeg
+    - openjpeg >=2
     - zlib
   run:
-    - poppler-data
+    - poppler-data >=0.4.8
     - curl
 
 test:
@@ -62,3 +59,4 @@ about:
 extra:
   recipe-maintainers:
     - pkgw
+    - msarahan
