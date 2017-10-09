@@ -11,7 +11,7 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 4
+  number: 0
   skip: True  # [win]
   run_exports:
     # add new symbols often.  Don't remove symbols often at all.  Keeping default.
@@ -20,16 +20,14 @@ build:
 
 requirements:
   build:
+    - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    # version spec here is so we don't loop over variants for python.  It is only a build tool.
-    - python   3.6.*
-    - perl
+    - cmake
   host:
     - {{ cdt('libx11-devel') }}          # [linux]
     - {{ cdt('libxrender-devel') }}      # [linux]
     - {{ cdt('libxau-devel') }}          # [linux]
     - {{ cdt('libxext-devel') }}         # [linux]
-    - pkg-config  # [not win]
     - cairo
     - libcurl
     - freetype
@@ -38,10 +36,10 @@ requirements:
     - jpeg
     - libpng
     - libtiff
-    - openjpeg
+    - openjpeg >=2
     - zlib
   run:
-    - poppler-data
+    - poppler-data >=0.4.8
 
 test:
   commands:
@@ -61,3 +59,4 @@ extra:
   recipe-maintainers:
     - pkgw
     - ocefpaf
+    - msarahan
