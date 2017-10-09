@@ -38,7 +38,7 @@ requirements:
     - jpeg
     - libpng
     - libtiff
-    - openjpeg
+    - openjpeg >=2
     - zlib
   run:
     - poppler-data
