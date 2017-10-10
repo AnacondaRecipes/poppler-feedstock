@@ -22,7 +22,7 @@ cmake -G "$CMAKE_GENERATOR" \
       -DENABLE_LIBOPENJPEG=openjpeg2 \
       ..
 
-make -j${CPU_COUNT}
+make -j${CPU_COUNT} ${VERBOSE_CM}
 # make check requires a big data download
 make install
 
