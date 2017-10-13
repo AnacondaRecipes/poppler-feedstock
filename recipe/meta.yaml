@@ -38,6 +38,7 @@ requirements:
     - jpeg
     - libpng
     - libtiff
+    - libxcb                             # [linux]
     - openjpeg >=2
     - zlib
   run:
