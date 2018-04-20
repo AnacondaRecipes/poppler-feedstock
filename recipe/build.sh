@@ -2,15 +2,6 @@
 
 set -e
 
-# The zlib check does not let you specify its install prefix so we have
-# to go global.
-export CFLAGS="${CFLAGS} -I${PREFIX}/include"
-export CPPFLAGS="${CPPFLAGS} -I${PREFIX}/include"
-export LDFLAGS="${LDFLAGS} -L${PREFIX}/lib"
-if [[ ${HOST} =~ .*darwin.* ]] ; then
-    export LDFLAGS="${LDFLAGS} -Wl,-rpath,${PREFIX}/lib"
-fi
-
 mkdir build
 cd build
 
