@@ -36,6 +36,7 @@ requirements:
     - glib
     - gobject-introspection 1.*  # [not win]
     - jpeg
+    - libiconv                           # [osx]
     - libpng
     - libtiff
     - libxcb                             # [linux]
