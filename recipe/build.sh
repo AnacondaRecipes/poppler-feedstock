@@ -31,6 +31,10 @@ if [[ ${target_platform} =~ .*linux.* ]]; then
   CMAKE_PLATFORM_FLAGS+=(-DCMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES:PATH="${BUILD_PREFIX}/${HOST}/sysroot/usr/include")
 fi
 
+# We must avoid very long shebangs here.
+echo '#!/usr/bin/env bash' > g-ir-scanner.sh
+echo "${PYTHON} ${PREFIX}/bin/g-ir-scanner \$*" >> g-ir-scanner.sh
+chmod +x ./g-ir-scanner.sh
 
 cmake -G "$CMAKE_GENERATOR" \
       -D CMAKE_PREFIX_PATH=$PREFIX \
