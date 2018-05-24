@@ -24,6 +24,14 @@ fi
 
 mkdir build && cd build
 
+declare -a CMAKE_PLATFORM_FLAGS
+if [[ ${target_platform} =~ .*linux.* ]]; then
+  # To locate ICONV_INCLUDE_DIR and ICONV_LIBRARIES
+  CMAKE_PLATFORM_FLAGS+=(-DCMAKE_FIND_ROOT_PATH="${PREFIX};${BUILD_PREFIX}/${HOST}/sysroot")
+  CMAKE_PLATFORM_FLAGS+=(-DCMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES:PATH="${BUILD_PREFIX}/${HOST}/sysroot/usr/include")
+fi
+
+
 cmake -G "$CMAKE_GENERATOR" \
       -D CMAKE_PREFIX_PATH=$PREFIX \
       -D CMAKE_INSTALL_LIBDIR:PATH=$PREFIX/lib \
