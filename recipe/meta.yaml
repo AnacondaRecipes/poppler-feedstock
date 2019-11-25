@@ -19,8 +19,12 @@ source:
 build:
   skip: True  # [win]
   number: 0
+  run_exports:
+    # add new symbols often.  Don't remove symbols often at all.  Keeping default.
+    #   https://abi-laboratory.pro/tracker/timeline/poppler/
+    - {{ pin_subpackage('poppler') }}
   detect_binary_files_with_prefix: true
-  skip: true  # [(unix and (cxx_compiler == 'toolchain_cxx')) or (win and py27)]
+  skip: true  # [(unix and (cxx_compiler == 'toolchain_cxx'))]
 
 requirements:
   build:
