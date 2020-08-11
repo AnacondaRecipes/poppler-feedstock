@@ -18,7 +18,7 @@ source:
 
 build:
   skip: True  # [win]
-  number: 0
+  number: 1
   run_exports:
     # add new symbols often.  Don't remove symbols often at all.  Keeping default.
     #   https://abi-laboratory.pro/tracker/timeline/poppler/
@@ -40,7 +40,7 @@ requirements:
     - {{ cdt('libxrender-devel') }}      # [linux]
     - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
   host:
-    - python 3.6
+    - python >=3.6
     - cairo  # [not win]
     - curl
     - freetype
@@ -55,6 +55,7 @@ requirements:
     - zlib
     - fontconfig
     - libcurl
+    - gettext  # [osx]
   run:
     - poppler-data
     - cairo  # [not win]
@@ -68,6 +69,7 @@ requirements:
     - fontconfig
     - libcurl
     - zlib
+    - gettext  # [osx]
 
 test:
   commands:
