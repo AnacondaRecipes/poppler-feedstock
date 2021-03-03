@@ -50,7 +50,7 @@ requirements:
     - libiconv                           # [osx]
     - libpng
     - libtiff
-    - libxcb                             # [linux]
+#   - libxcb                             # [linux]
     - openjpeg >=2
     - zlib
     - fontconfig
