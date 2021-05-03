@@ -1,4 +1,4 @@
-{% set version = "21.5.0" %}
+{% set version = "21.05.0" %}
 {% set posix = 'm2-' if win else '' %}
 
 package:
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://poppler.freedesktop.org/poppler-{{ version }}.tar.xz
-  sha256: a00bb4f55e680d6681982b0fe2d64aab1e9569e47e21605f168b9af09b771742
+  sha256: dafd537b680fad1215bc40fc53d1f38e8449d7c185bc60d5a89e1d26c90dbd8c
   patches:
     - g-ir-scanner-libpath.patch
     - cmakelists.win.patch  # [win]
