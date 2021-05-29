@@ -1,0 +1,7 @@
+# Use older glib release for rebuilding to avoid this macOS issue:
+# <https://gitlab.freedesktop.org/poppler/poppler/-/issues/1060>
+#
+# NOTE: This issue has been closed upstream, so we should remove this
+# restriction when we update the poppler recipe.
+glib:
+  - 2.65.0
