@@ -43,6 +43,7 @@ cmake -G "$CMAKE_GENERATOR" \
       -D ENABLE_XPDF_HEADERS=True \
       -D ENABLE_LIBCURL=True \
       -D ENABLE_LIBOPENJPEG=openjpeg2 \
+      -D ENABLE_UNSTABLE_API_ABI_HEADERS=ON \
        $SRC_DIR
 
 make -j$CPU_COUNT V=1
