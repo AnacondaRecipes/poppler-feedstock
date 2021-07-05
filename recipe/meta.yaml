@@ -1,4 +1,4 @@
-{% set version = "21.7.0" %}
+{% set version = "21.07.0" %}
 {% set posix = 'm2-' if win else '' %}
 
 package:
@@ -7,9 +7,9 @@ package:
 
 source:
   url: https://poppler.freedesktop.org/poppler-{{ version }}.tar.xz
-  sha256: a00bb4f55e680d6681982b0fe2d64aab1e9569e47e21605f168b9af09b771742
+  sha256: e26ab29f68065de4d6562f0a3e2b5435a83ca92be573b99a1c81998fa286a4d4
   patches:
-    - g-ir-scanner-libpath.patch
+    #- g-ir-scanner-libpath.patch
     - cmakelists.win.patch  # [win]
     - exportsymbols.patch  # [win]
     # system headers must be included before jpeg on Windows
@@ -50,10 +50,10 @@ requirements:
     - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
   host:
     - python >=3.6
-    - cairo  # [not win]
+    - cairo >=1.10.0  # [not win]
     - curl
     - freetype
-    - glib
+    - glib >=2.56
     - gobject-introspection 1.*  # [not win]
     - jpeg
     - libiconv                           # [osx]
@@ -65,12 +65,17 @@ requirements:
     - fontconfig
     - libcurl
     - gettext  # [osx]
+    - nss >=3.19
+    - boost >=1.58.0
+    - lcms2
+    - poppler-data  # [unix]
+    - qt >= 5.9
   run:
     - poppler-data
-    - cairo  # [not win]
+    - cairo >=1.10.0  # [not win]
     - curl
     - freetype
-    - glib
+    - glib >=2.56
     - jpeg
     - libpng
     - libtiff
@@ -79,6 +84,11 @@ requirements:
     - libcurl
     - zlib
     - gettext  # [osx]
+    - nss >=3.19
+    - boost >=1.58.0
+    - lcms2
+    - poppler-data  # [unix]
+    - qt >= 5.9
 
 test:
   commands:
@@ -89,10 +99,11 @@ test:
 
 about:
   home: https://poppler.freedesktop.org/
-  license: GPLv2
+  license: GPLv2 AND GPL-3.0
   license_family: GPL
   license_file: COPYING
   summary: 'The Poppler PDF manipulation library.'
+  dev_url: https://gitlab.freedesktop.org/poppler/poppler
 
 extra:
   recipe-maintainers:
