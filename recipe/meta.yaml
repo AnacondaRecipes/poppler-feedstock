@@ -69,7 +69,7 @@ requirements:
     - boost >=1.58.0
     - lcms2
     - poppler-data  # [unix]
-    - qt >= 5.9
+    - qt >=5.9
   run:
     - poppler-data
     - cairo >=1.10.0  # [not win]
@@ -88,7 +88,7 @@ requirements:
     - boost >=1.58.0
     - lcms2
     - poppler-data  # [unix]
-    - qt >= 5.9
+    - qt >=5.9
 
 test:
   commands:
