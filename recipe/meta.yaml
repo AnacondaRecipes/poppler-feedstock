@@ -15,7 +15,7 @@ source:
     # system headers must be included before jpeg on Windows
     - includesystembeforejpeg.patch  # [win]
     - vs2015-no-for-loop-constexpr.win.patch  # [win]
-    - mac_volatile.patch  # [osx]
+#    - mac_volatile.patch  # [osx]
 
 build:
   skip: True  # [win]
