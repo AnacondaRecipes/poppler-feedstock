@@ -9,7 +9,7 @@ source:
   url: https://poppler.freedesktop.org/poppler-{{ version }}.tar.xz
   sha256: e9cf5dc5964bce4bb0264d1c4f8122706c910588b421cfc30abc97d6b23e602d
   patches:
-    - g-ir-scanner-libpath.patch
+#    - g-ir-scanner-libpath.patch
     - cmakelists.win.patch  # [win]
     - exportsymbols.patch  # [win]
     # system headers must be included before jpeg on Windows
