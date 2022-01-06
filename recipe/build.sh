@@ -16,6 +16,14 @@ else
     export LDFLAGS="${LDFLAGS} -Wl,-rpath-link,${PREFIX}/lib"
 fi
 
+echo "Platform: ${target_platform}"
+if [[ ${target_platform} == linux-ppc64le ]];then
+    # TODO: this should likely be somewhere else... perhaps the compiler activation
+  CMAKE_ARGS=" -DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER -DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY -DCMAKE_FIND_ROOT_PATH=$PREFIX;$BUILD_PREFIX/x86_64-conda-linux-gnu/sysroot -DCMAKE_INSTALL_PREFIX=$PREFIX -DCMAKE_INSTALL_LIBDIR=lib"
+  # Turn off iconv
+  CMAKE_ARGS="${CMAKE_ARGS} -DWITH_Iconv=OFF"
+fi
+
 mkdir build && cd build
 
 # We must avoid very long shebangs here.

@@ -24,7 +24,7 @@ build:
     #   https://abi-laboratory.pro/tracker/timeline/poppler/
     - {{ pin_subpackage('poppler') }}
   detect_binary_files_with_prefix: true
-  skip: true  # [(unix and (cxx_compiler == 'toolchain_cxx'))]
+  skip: true  # [s390x or (unix and (cxx_compiler == 'toolchain_cxx'))]
   missing_dso_whitelist:
    - $RPATH/libm.so.6
    - $RPATH/libc.so.6
