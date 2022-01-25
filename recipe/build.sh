@@ -2,12 +2,6 @@
 
 set -e
 
-# The zlib check does not let you specify its install prefix so we have
-# to go global.
-export CFLAGS="${CFLAGS} -I${PREFIX}/include"
-export CPPFLAGS="${CPPFLAGS} -I${PREFIX}/include"
-export LDFLAGS="${LDFLAGS} -L${PREFIX}/lib"
-
 if [ -n "$OSX_ARCH" ] ; then
     export LDFLAGS="${LDFLAGS} -Wl,-rpath,${PREFIX}/lib"
 
@@ -22,33 +16,31 @@ else
     export LDFLAGS="${LDFLAGS} -Wl,-rpath-link,${PREFIX}/lib"
 fi
 
-mkdir build && cd build
-
-declare -a CMAKE_PLATFORM_FLAGS
-if [[ ${target_platform} =~ .*linux.* ]]; then
-  # To locate ICONV_INCLUDE_DIR and ICONV_LIBRARIES
-  CMAKE_PLATFORM_FLAGS+=(-DCMAKE_FIND_ROOT_PATH="${PREFIX};${BUILD_PREFIX}/${HOST}/sysroot")
-  CMAKE_PLATFORM_FLAGS+=(-DCMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES:PATH="${BUILD_PREFIX}/${HOST}/sysroot/usr/include")
+echo "Platform: ${target_platform}"
+if [[ ${target_platform} == linux-ppc64le ]];then
+    # TODO: this should likely be somewhere else... perhaps the compiler activation
+  CMAKE_ARGS=" -DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER -DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY -DCMAKE_FIND_ROOT_PATH=$PREFIX;$BUILD_PREFIX/x86_64-conda-linux-gnu/sysroot -DCMAKE_INSTALL_PREFIX=$PREFIX -DCMAKE_INSTALL_LIBDIR=lib"
+  # Turn off iconv
+  CMAKE_ARGS="${CMAKE_ARGS} -DWITH_Iconv=OFF"
 fi
+
+mkdir build && cd build
 
 # We must avoid very long shebangs here.
 echo '#!/usr/bin/env bash' > g-ir-scanner.sh
 echo "${PYTHON} ${PREFIX}/bin/g-ir-scanner \$*" >> g-ir-scanner.sh
 chmod +x ./g-ir-scanner.sh
 
-cmake -G "$CMAKE_GENERATOR" \
-      -D CMAKE_PREFIX_PATH=$PREFIX \
-      -D CMAKE_INSTALL_LIBDIR:PATH=$PREFIX/lib \
-      -D CMAKE_INSTALL_PREFIX=$PREFIX \
-      -D ENABLE_XPDF_HEADERS=True \
+cmake -GNinja \
+      ${CMAKE_ARGS} \
       -D ENABLE_LIBCURL=True \
       -D ENABLE_LIBOPENJPEG=openjpeg2 \
       -D ENABLE_UNSTABLE_API_ABI_HEADERS=ON \
        $SRC_DIR
 
-make -j$CPU_COUNT V=1
+cmake --build .
 # ctest  # no tests were found :-/
-make install -j$CPU_COUNT
+cmake --install .
 
 pushd ${PREFIX}
   rm -rf lib/libpoppler*.la lib/libpoppler*.a share/gtk-doc

@@ -1,4 +1,4 @@
-{% set version = "0.81.0" %}
+{% set version = "21.11.0" %}
 {% set posix = 'm2-' if win else '' %}
 
 package:
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://poppler.freedesktop.org/poppler-{{ version }}.tar.xz
-  sha256: 212d020b035b67b36c9666bd08ac778dff3222d85c01c338787d546f0f9bfe02
+  sha256: 31b76b5cac0a48612fdd154c02d9eca01fd38fb8eaa77c1196840ecdeb53a584
   patches:
     - g-ir-scanner-libpath.patch
     - cmakelists.win.patch  # [win]
@@ -15,17 +15,16 @@ source:
     # system headers must be included before jpeg on Windows
     - includesystembeforejpeg.patch  # [win]
     - vs2015-no-for-loop-constexpr.win.patch  # [win]
-    - mac_volatile.patch  # [osx]
 
 build:
   skip: True  # [win]
-  number: 2
+  number: 0
   run_exports:
     # add new symbols often.  Don't remove symbols often at all.  Keeping default.
     #   https://abi-laboratory.pro/tracker/timeline/poppler/
     - {{ pin_subpackage('poppler') }}
   detect_binary_files_with_prefix: true
-  skip: true  # [(unix and (cxx_compiler == 'toolchain_cxx'))]
+  skip: true  # [s390x or (unix and (cxx_compiler == 'toolchain_cxx'))]
   missing_dso_whitelist:
    - $RPATH/libm.so.6
    - $RPATH/libc.so.6
@@ -40,6 +39,7 @@ requirements:
     - {{ compiler('cxx') }}
     - pkg-config  # [not win]
     - cmake
+    - ninja
     - {{ posix }}patch
     - {{ posix }}make
     - perl
@@ -50,6 +50,7 @@ requirements:
     - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
   host:
     - python >=3.6
+    - boost-cpp
     - cairo  # [not win]
     - curl
     - freetype
@@ -84,8 +85,6 @@ test:
   commands:
     - pdfunite --help
     - pdftocairo --help  # [not win]
-    - conda inspect linkages -p $PREFIX $PKG_NAME  # [not win]
-    - conda inspect objects -p $PREFIX $PKG_NAME  # [osx]
 
 about:
   home: https://poppler.freedesktop.org/
