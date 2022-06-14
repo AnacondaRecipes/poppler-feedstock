@@ -17,14 +17,13 @@ source:
     - vs2015-no-for-loop-constexpr.win.patch  # [win]
 
 build:
-  skip: True  # [win]
-  number: 0
+  skip: True  # [win or s390x]
+  number: 1
   run_exports:
     # add new symbols often.  Don't remove symbols often at all.  Keeping default.
     #   https://abi-laboratory.pro/tracker/timeline/poppler/
     - {{ pin_subpackage('poppler') }}
   detect_binary_files_with_prefix: true
-  skip: true  # [s390x or (unix and (cxx_compiler == 'toolchain_cxx'))]
   missing_dso_whitelist:
    - $RPATH/libm.so.6
    - $RPATH/libc.so.6
@@ -32,6 +31,7 @@ build:
    - $RPATH/libpthread.so.0
   ignore_run_exports:
    - libxcb
+   - pixman
 
 requirements:
   build:
@@ -88,10 +88,14 @@ test:
 
 about:
   home: https://poppler.freedesktop.org/
-  license: GPLv2
+  license: GPL-2.0-or-later
   license_family: GPL
   license_file: COPYING
-  summary: 'The Poppler PDF manipulation library.'
+  summary: The Poppler PDF manipulation library.
+  description: |
+    Poppler is a PDF rendering library based on the xpdf-3.0 code base.
+  dev_url: https://gitlab.freedesktop.org/poppler/poppler
+  doc_url: https://poppler.freedesktop.org/api/cpp/
 
 extra:
   recipe-maintainers:
