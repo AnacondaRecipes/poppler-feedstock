@@ -29,6 +29,7 @@ build:
    - $RPATH/libc.so.6
    - $RPATH/ld-linux-x86-64.so.2
    - $RPATH/libpthread.so.0
+   - $RPATH/ld64.so.1  # [s390x]
   ignore_run_exports:
    - libxcb
    - pixman
