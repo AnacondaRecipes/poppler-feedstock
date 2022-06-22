@@ -17,7 +17,7 @@ source:
     - vs2015-no-for-loop-constexpr.win.patch  # [win]
 
 build:
-  skip: True  # [win or s390x]
+  skip: True  # [win]
   number: 1
   run_exports:
     # add new symbols often.  Don't remove symbols often at all.  Keeping default.
