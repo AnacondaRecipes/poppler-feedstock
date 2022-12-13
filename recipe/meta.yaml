@@ -21,6 +21,11 @@ source:
 build:
   number: 0
   detect_binary_files_with_prefix: true
+  missing_dso_whitelist:
+   - $RPATH/libm.so.6
+   - $RPATH/libc.so.6
+   - $RPATH/ld-linux-x86-64.so.2
+   - $RPATH/libpthread.so.0
 
 requirements:
   build:
@@ -64,6 +69,12 @@ requirements:
 
 outputs:
   - name: poppler
+    build:
+      missing_dso_whitelist:
+        - $RPATH/libm.so.6
+        - $RPATH/libc.so.6
+        - $RPATH/ld-linux-x86-64.so.2
+        - $RPATH/libpthread.so.0
     script: install.sh   # [unix]
     script: install.bat  # [not unix]
     requirements:
@@ -105,9 +116,11 @@ outputs:
         - nss  # [not win]
         - openjpeg
         - zlib
+
       run:
         - {{ pin_compatible('boost-cpp') }}
         - poppler-data
+
     test:
       commands:
         - pdfinfo -listenc
@@ -117,6 +130,11 @@ outputs:
   - name: poppler-qt
     build:
       skip: true  # [ppc64le or s390x]
+      missing_dso_whitelist:
+        - $RPATH/libm.so.6
+        - $RPATH/libc.so.6
+        - $RPATH/ld-linux-x86-64.so.2
+        - $RPATH/libpthread.so.0
     script: install.sh  # [unix]
     script: install.bat  # [not unix]
     requirements:
@@ -162,6 +180,7 @@ outputs:
         - {{ pin_subpackage('poppler', exact=True) }}
       run:
         - {{ pin_subpackage('poppler', exact=True) }}
+
     test:
       commands:
         - test -f ${PREFIX}/lib/pkgconfig/poppler-qt5.pc  # [not win]
