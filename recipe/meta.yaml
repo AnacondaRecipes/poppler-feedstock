@@ -64,7 +64,7 @@ requirements:
     - libiconv
     - libpng
     - libtiff
-    - nss  # [not win]
+    - nss  # [not (win or s390x)]
     - openjpeg
     - qt-main  # [not (ppc64le or s390x)]
     - zlib
@@ -115,7 +115,7 @@ outputs:
         - libiconv
         - libpng
         - libtiff
-        - nss  # [not win]
+        - nss  # [not (win or s390x)]
         - openjpeg
         - zlib
 
@@ -175,7 +175,7 @@ outputs:
         - libiconv
         - libpng
         - libtiff
-        - nss  # [not win]
+        - nss  # [not (win or s390x)]
         - openjpeg
         - qt-main
         - zlib
