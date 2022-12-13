@@ -8,7 +8,9 @@ package:
   version: {{ version }}
 
 source:
-  url: https://poppler.freedesktop.org/poppler-{{ version }}.tar.xz
+  url: https://fossies.org/linux/misc/poppler-22.12.0.tar.xz
+  # we use different source as our firewall does strange things
+  # url: https://poppler.freedesktop.org/poppler-{{ version }}.tar.xz
   sha256: d9aa9cacdfbd0f8e98fc2b3bb008e645597ed480685757c3e7bc74b4278d15c0
   patches:                            # [win]
     - exportsymbols.patch             # [win]
