@@ -17,12 +17,6 @@ if [ -n "$OSX_ARCH" ] ; then
     export CXXFLAGS="${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY"
 fi
 
-    export GI_CROSS_LAUNCHER=$BUILD_PREFIX/libexec/gi-cross-launcher-load.sh
-
-    # Make sure to get build-platform tools:
-    export EXTRA_CMAKE_ARGS="$EXTRA_CMAKE_ARGS -DGLIB2_MKENUMS=$BUILD_PREFIX/bin/glib-mkenums -DGLIB2_MKENUMS_PYTHON=$BUILD_PREFIX/bin/python"
-fi
-
 mkdir -p build
 cd build
 
