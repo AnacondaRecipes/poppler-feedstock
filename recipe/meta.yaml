@@ -34,13 +34,13 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     # Need these CDTs for Qt on Linux. Please keep them alphabetized!
-    - {{ cdt('libselinux-devel') }}     # [linux]
-    - {{ cdt('libxdamage') }}           # [linux]
-    - {{ cdt('libxfixes') }}            # [linux]
-    - {{ cdt('libxscrnsaver-devel') }}  # [linux]
-    - {{ cdt('libxtst-devel') }}        # [linux]
-    - {{ cdt('libxxf86vm') }}           # [linux]
-    - {{ cdt('mesa-libgl-devel') }}     # [linux]
+    - {{ cdt('libselinux-devel') }}     # [linux and not (ppc64le or s390x)]
+    - {{ cdt('libxdamage') }}           # [linux and not (ppc64le or s390x)]]
+    - {{ cdt('libxfixes') }}            # [linux and not (ppc64le or s390x)]]
+    - {{ cdt('libxscrnsaver-devel') }}  # [linux and not (ppc64le or s390x)]]
+    - {{ cdt('libxtst-devel') }}        # [linux and not (ppc64le or s390x)]
+    - {{ cdt('libxxf86vm') }}           # [linux and not (ppc64le or s390x)]]
+    - {{ cdt('mesa-libgl-devel') }}     # [linux and not (ppc64le or s390x)]]
     - {{ cdt('mesa-libegl-devel') }}    # [linux and not (ppc64le or s390x)]
     - m2-msys2-runtime  # [win]
     - {{ native }}pkg-config
@@ -84,13 +84,13 @@ outputs:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         # Need these CDTs for Qt on Linux. Please keep them alphabetized!
-        - {{ cdt('libselinux-devel') }}     # [linux]
-        - {{ cdt('libxdamage') }}           # [linux]
-        - {{ cdt('libxfixes') }}            # [linux]
-        - {{ cdt('libxscrnsaver-devel') }}  # [linux]
-        - {{ cdt('libxtst-devel') }}        # [linux]
-        - {{ cdt('libxxf86vm') }}           # [linux]
-        - {{ cdt('mesa-libgl-devel') }}     # [linux]
+        - {{ cdt('libselinux-devel') }}     # [linux and not (ppc64le or s390x)]]
+        - {{ cdt('libxdamage') }}           # [linux and not (ppc64le or s390x)]]
+        - {{ cdt('libxfixes') }}            # [linux and not (ppc64le or s390x)]]
+        - {{ cdt('libxscrnsaver-devel') }}  # [linux and not (ppc64le or s390x)]]
+        - {{ cdt('libxtst-devel') }}        # [linux and not (ppc64le or s390x)]]
+        - {{ cdt('libxxf86vm') }}           # [linux and not (ppc64le or s390x)]]
+        - {{ cdt('mesa-libgl-devel') }}     # [linux and not (ppc64le or s390x)]]
         - {{ cdt('mesa-libegl-devel') }}    # [linux and not (ppc64le or s390x)]
         - m2-msys2-runtime  # [win]
         - {{ native }}pkg-config
@@ -144,13 +144,13 @@ outputs:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         # Need these CDTs for Qt on Linux. Please keep them alphabetized!
-        - {{ cdt('libselinux-devel') }}     # [linux]
-        - {{ cdt('libxdamage') }}           # [linux]
-        - {{ cdt('libxfixes') }}            # [linux]
-        - {{ cdt('libxscrnsaver-devel') }}  # [linux]
-        - {{ cdt('libxtst-devel') }}        # [linux]
-        - {{ cdt('libxxf86vm') }}           # [linux]
-        - {{ cdt('mesa-libgl-devel') }}     # [linux]
+        - {{ cdt('libselinux-devel') }}     # [linux and not (ppc64le or s390x)]]
+        - {{ cdt('libxdamage') }}           # [linux and not (ppc64le or s390x)]]
+        - {{ cdt('libxfixes') }}            # [linux and not (ppc64le or s390x)]]
+        - {{ cdt('libxscrnsaver-devel') }}  # [linux and not (ppc64le or s390x)]]
+        - {{ cdt('libxtst-devel') }}        # [linux and not (ppc64le or s390x)]]
+        - {{ cdt('libxxf86vm') }}           # [linux and not (ppc64le or s390x)]]
+        - {{ cdt('mesa-libgl-devel') }}     # [linux and not (ppc64le or s390x)]]
         - {{ cdt('mesa-libegl-devel') }}    # [linux and not (ppc64le or s390x)]
         - m2-msys2-runtime  # [win]
         - {{ native }}pkg-config
