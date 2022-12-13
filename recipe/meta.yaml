@@ -41,7 +41,7 @@ requirements:
     - {{ cdt('libxtst-devel') }}        # [linux]
     - {{ cdt('libxxf86vm') }}           # [linux]
     - {{ cdt('mesa-libgl-devel') }}     # [linux]
-    - {{ cdt('mesa-libegl-devel') }}    # [linux]
+    - {{ cdt('mesa-libegl-devel') }}    # [linux and not (ppc64le or s390x)]
     - m2-msys2-runtime  # [win]
     - {{ native }}pkg-config
     - cmake
@@ -91,7 +91,7 @@ outputs:
         - {{ cdt('libxtst-devel') }}        # [linux]
         - {{ cdt('libxxf86vm') }}           # [linux]
         - {{ cdt('mesa-libgl-devel') }}     # [linux]
-        - {{ cdt('mesa-libegl-devel') }}    # [linux]
+        - {{ cdt('mesa-libegl-devel') }}    # [linux and not (ppc64le or s390x)]
         - m2-msys2-runtime  # [win]
         - {{ native }}pkg-config
         - cmake
@@ -151,7 +151,7 @@ outputs:
         - {{ cdt('libxtst-devel') }}        # [linux]
         - {{ cdt('libxxf86vm') }}           # [linux]
         - {{ cdt('mesa-libgl-devel') }}     # [linux]
-        - {{ cdt('mesa-libegl-devel') }}    # [linux]
+        - {{ cdt('mesa-libegl-devel') }}    # [linux and not (ppc64le or s390x)]
         - m2-msys2-runtime  # [win]
         - {{ native }}pkg-config
         - cmake
