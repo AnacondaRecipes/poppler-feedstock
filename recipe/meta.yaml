@@ -34,18 +34,23 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     # Need these CDTs for Qt on Linux. Please keep them alphabetized!
-    - {{ cdt('libselinux-devel') }}     # [linux and not (ppc64le or s390x)]
-    - {{ cdt('libxdamage') }}           # [linux and not (ppc64le or s390x)]]
-    - {{ cdt('libxfixes') }}            # [linux and not (ppc64le or s390x)]]
-    - {{ cdt('libxscrnsaver-devel') }}  # [linux and not (ppc64le or s390x)]]
-    - {{ cdt('libxtst-devel') }}        # [linux and not (ppc64le or s390x)]
-    - {{ cdt('libxxf86vm') }}           # [linux and not (ppc64le or s390x)]]
-    - {{ cdt('mesa-libgl-devel') }}     # [linux and not (ppc64le or s390x)]]
-    - {{ cdt('mesa-libegl-devel') }}    # [linux and not (ppc64le or s390x)]
+    - {{ cdt('libselinux-devel') }}      # [linux and not (ppc64le or s390x)]
+    - {{ cdt('libxdamage') }}            # [linux and not (ppc64le or s390x)]]
+    - {{ cdt('libxfixes') }}             # [linux and not (ppc64le or s390x)]]
+    - {{ cdt('libxscrnsaver-devel') }}   # [linux and not (ppc64le or s390x)]]
+    - {{ cdt('libxtst-devel') }}         # [linux and not (ppc64le or s390x)]
+    - {{ cdt('libxxf86vm') }}            # [linux and not (ppc64le or s390x)]]
+    - {{ cdt('mesa-libgl-devel') }}      # [linux and not (ppc64le or s390x)]]
+    - {{ cdt('mesa-libegl-devel') }}     # [linux and not (ppc64le or s390x)]
+    - {{ cdt('libx11-devel') }}          # [linux]
+    - {{ cdt('libxau-devel') }}          # [linux]
+    - {{ cdt('libxext-devel') }}         # [linux]
+    - {{ cdt('libxrender-devel') }}      # [linux]
+    - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
     - m2-msys2-runtime  # [win]
-    - {{ native }}pkg-config
+    - pkg-config
     - cmake
-    - make
+    - {{ posix }}make
     - ninja
     - {{ posix }}patch
     - perl 5
@@ -92,10 +97,15 @@ outputs:
         - {{ cdt('libxxf86vm') }}           # [linux and not (ppc64le or s390x)]]
         - {{ cdt('mesa-libgl-devel') }}     # [linux and not (ppc64le or s390x)]]
         - {{ cdt('mesa-libegl-devel') }}    # [linux and not (ppc64le or s390x)]
+        - {{ cdt('libx11-devel') }}          # [linux]
+        - {{ cdt('libxau-devel') }}          # [linux]
+        - {{ cdt('libxext-devel') }}         # [linux]
+        - {{ cdt('libxrender-devel') }}      # [linux]
+        - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
         - m2-msys2-runtime  # [win]
-        - {{ native }}pkg-config
+        - pkg-config
         - cmake
-        - make
+        - {{ posix }}make
         - ninja
         - {{ posix }}patch
         - perl 5
@@ -152,10 +162,15 @@ outputs:
         - {{ cdt('libxxf86vm') }}           # [linux and not (ppc64le or s390x)]]
         - {{ cdt('mesa-libgl-devel') }}     # [linux and not (ppc64le or s390x)]]
         - {{ cdt('mesa-libegl-devel') }}    # [linux and not (ppc64le or s390x)]
+        - {{ cdt('libx11-devel') }}          # [linux]
+        - {{ cdt('libxau-devel') }}          # [linux]
+        - {{ cdt('libxext-devel') }}         # [linux]
+        - {{ cdt('libxrender-devel') }}      # [linux]
+        - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
         - m2-msys2-runtime  # [win]
         - {{ native }}pkg-config
         - cmake
-        - make
+        - {{ posix }}make
         - ninja
         - {{ posix }}patch
         - perl 5
