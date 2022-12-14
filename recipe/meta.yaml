@@ -61,7 +61,7 @@ requirements:
     - curl
     - fontconfig
     - freetype
-    - gettext
+    - gettext  # [osx]
     - glib
     - jpeg
     - lcms2
@@ -117,7 +117,7 @@ outputs:
         - curl
         - fontconfig
         - freetype
-        - gettext
+        - gettext  # [osx]
         - glib
         - jpeg
         - lcms2
@@ -182,7 +182,7 @@ outputs:
         - curl
         - fontconfig
         - freetype
-        - gettext
+        - gettext  # [osx]
         - glib
         - jpeg
         - lcms2
