@@ -13,6 +13,6 @@ cmake -G "Ninja" ^
       -D ENABLE_UNSTABLE_API_ABI_HEADERS=True ^
       -D ENABLE_LIBCURL=True ^
       -D ENABLE_LIBOPENJPEG=openjpeg2 ^
-      -D GLIB2_MKENUMS_PYTHON=%PREFIX%\python.exe ^
+      -D GLIB2_MKENUMS_PYTHON=%PYTHON% ^
        %SRC_DIR%
 if errorlevel 1 exit 1	   
