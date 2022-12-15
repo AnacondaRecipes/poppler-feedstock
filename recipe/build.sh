@@ -20,7 +20,7 @@ fi
 if [[ ${target_platform} == linux-ppc64le ]]; then
   # there are issues with CDTs and there HOST name ...
   pushd "${BUILD_PREFIX}"
-  cp -Rn powerpc64le-conda_cos7-linux-gnu/* powerpc64le-conda-linux-gnu/.
+  cp -Rn powerpc64le-conda_cos7-linux-gnu/* powerpc64le-conda-linux-gnu/. || true
   popd
   export CFLAGS="${CFLAGS} -Wno-enum-conversion"
 fi
