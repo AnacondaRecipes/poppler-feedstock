@@ -17,6 +17,14 @@ if [ -n "$OSX_ARCH" ] ; then
     export CXXFLAGS="${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY"
 fi
 
+if [[ ${target_platform} == linux-ppc64le ]]; then
+  # there are issues with CDTs and there HOST name ...
+  pushd "${BUILD_PREFIX}"
+  cp -Rn powerpc64le-conda_cos7-linux-gnu/* powerpc64le-conda-linux-gnu/.
+  popd
+  export CFLAGS="${CFLAGS} -Wno-enum-conversion"
+fi
+
 mkdir -p build
 cd build
 
