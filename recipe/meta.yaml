@@ -58,6 +58,7 @@ requirements:
     - perl 5
     - gobject-introspection 1.*  # [not win]
   host:
+    - python 3.9  # [win]
     - boost-cpp {{ boost_cpp }}
     - cairo
     - curl
@@ -115,6 +116,7 @@ outputs:
         - gobject-introspection 1.*  # [not win]
 
       host:
+        - python 3.9  # [win]
         - boost-cpp {{ boost_cpp }}
         - cairo
         - curl
