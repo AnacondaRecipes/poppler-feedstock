@@ -55,7 +55,7 @@ requirements:
     - {{ posix }}make
     - ninja
     - {{ posix }}patch
-    - perl 5
+    - perl 5.*
     - gobject-introspection 1.*  # [not win]
   host:
     - python 3.9  # [win]
@@ -112,7 +112,7 @@ outputs:
         - {{ posix }}make
         - ninja
         - {{ posix }}patch
-        - perl 5
+        - perl 5.*
         - gobject-introspection 1.*  # [not win]
 
       host:
@@ -180,7 +180,7 @@ outputs:
         - {{ posix }}make
         - ninja
         - {{ posix }}patch
-        - perl 5
+        - perl 5.*
         - gobject-introspection 1.*  # [not win]
 
       host:
