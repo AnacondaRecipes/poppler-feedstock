@@ -33,6 +33,7 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+    - binutils  # [linux]
     # Need these CDTs for Qt on Linux. Please keep them alphabetized!
     - {{ cdt('libselinux-devel') }}      # [linux]
     - {{ cdt('libxdamage') }}            # [linux]
@@ -58,7 +59,7 @@ requirements:
     - perl 5.*
     - gobject-introspection 1.*  # [not win]
   host:
-    - python 3.9  # [win]
+    - python 3.9
     - boost-cpp {{ boost_cpp }}
     - cairo
     - curl
@@ -116,7 +117,7 @@ outputs:
         - gobject-introspection 1.*  # [not win]
 
       host:
-        - python 3.9  # [win]
+        - python 3.9
         - boost-cpp {{ boost_cpp }}
         - cairo
         - curl
@@ -133,6 +134,7 @@ outputs:
         - nss  # [not (win or s390x)]
         - openjpeg
         - zlib
+        - nspr
 
       run:
         - {{ pin_compatible('boost-cpp') }}
@@ -152,6 +154,7 @@ outputs:
         - $RPATH/libc.so.6
         - $RPATH/ld-linux-x86-64.so.2
         - $RPATH/libpthread.so.0
+        - $RPATH/poppler.dll
     script: install.sh  # [unix]
     script: install.bat  # [not unix]
     requirements:
@@ -184,6 +187,7 @@ outputs:
         - gobject-introspection 1.*  # [not win]
 
       host:
+        - python 3.9
         - boost-cpp {{ boost_cpp }}
         - cairo
         - curl
@@ -199,9 +203,10 @@ outputs:
         - libtiff
         - nss  # [not (win or s390x)]
         - openjpeg
-        - qt-main
+        - qt-main  # [not (ppc64le or s390x)]
         - zlib
         - {{ pin_subpackage('poppler', exact=True) }}
+        - nspr
       run:
         - {{ pin_subpackage('poppler', exact=True) }}
 

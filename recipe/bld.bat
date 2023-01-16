@@ -4,7 +4,7 @@ cd build
 :: Remove /GL from CXXFLAGS as this causes an error with the 
 :: cmake 'export all symbols' functionality
 set "CXXFLAGS= -MD"
-
+cmd /K "exit /B 0"
 cmake -G "Ninja" ^
       -D CMAKE_BUILD_TYPE=Release ^
       -D CMAKE_PREFIX_PATH=%LIBRARY_PREFIX% ^
@@ -15,4 +15,8 @@ cmake -G "Ninja" ^
       -D ENABLE_LIBOPENJPEG=openjpeg2 ^
       -D GLIB2_MKENUMS_PYTHON=%PYTHON% ^
        %SRC_DIR%
-if errorlevel 1 exit 1	   
+if errorlevel 1 (
+  type CMakeFiles\CMakeOutput.log
+  exit /b 1
+)
+exit /b 0

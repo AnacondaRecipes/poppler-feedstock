@@ -14,6 +14,16 @@ if [ -n "$OSX_ARCH" ] ; then
     export LDFLAGS_LD="$(echo $LDFLAGS_LD |sed -e "s/-dead_strip_dylibs//g")"
 fi
 
+if [[ ${target_platform} == linux-ppc64le ]]; then
+  # there are issues with CDTs and there HOST name ...
+  pushd "${BUILD_PREFIX}"
+  cp -Rn powerpc64le-conda-linux-gnu/* powerpc64le-conda_cos7-linux-gnu/. || true
+  cp -Rn powerpc64le-conda_cos7-linux-gnu/* powerpc64le-conda-linux-gnu/. || true
+  popd
+  export CFLAGS="${CFLAGS} -Wno-enum-conversion -Wno-maybe-uninitialized -fno-lto"
+  export CXXFLAGS="${CXXFLAGS} -Wno-enum-conversion -Wno-maybe-uninitialized -fno-lto"
+fi
+
 export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$BUILD_PREFIX/lib/pkgconfig"
 
 cd build
