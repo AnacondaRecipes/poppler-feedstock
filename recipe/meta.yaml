@@ -134,7 +134,7 @@ outputs:
         - nss  # [not (win or s390x)]
         - openjpeg
         - zlib
-        - nspr
+        - nspr  # [not win]
 
       run:
         - {{ pin_compatible('boost-cpp') }}
@@ -206,7 +206,7 @@ outputs:
         - qt-main  # [not (ppc64le or s390x)]
         - zlib
         - {{ pin_subpackage('poppler', exact=True) }}
-        - nspr
+        - nspr  # [not win]
       run:
         - {{ pin_subpackage('poppler', exact=True) }}
 

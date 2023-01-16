@@ -4,3 +4,7 @@ cxx_compiler:  # [win]
   - vs2019     # [win]
 boost_cpp:
   - 1.73
+c_compiler:   # [ppc64le]
+  - 8         # [ppc64le]
+cxx_compiler:  # [ppc64le]
+  - 8          # [ppc64le]
