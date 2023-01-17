@@ -28,6 +28,7 @@ build:
    - $RPATH/libc.so.6
    - $RPATH/ld-linux-x86-64.so.2
    - $RPATH/libpthread.so.0
+   - $RPATH/ld64.so.1
 
 requirements:
   build:
@@ -86,6 +87,7 @@ outputs:
         - $RPATH/libc.so.6
         - $RPATH/ld-linux-x86-64.so.2
         - $RPATH/libpthread.so.0
+        - $RPATH/ld64.so.1
     script: install.sh   # [unix]
     script: install.bat  # [not unix]
     requirements:
@@ -155,6 +157,7 @@ outputs:
         - $RPATH/ld-linux-x86-64.so.2
         - $RPATH/libpthread.so.0
         - $RPATH/poppler.dll
+        - $RPATH/ld64.so.1
     script: install.sh  # [unix]
     script: install.bat  # [not unix]
     requirements:
