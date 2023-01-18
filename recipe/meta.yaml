@@ -1,99 +1,238 @@
-{% set version = "21.11.0" %}
+{% set version = "22.12.0" %}
 {% set posix = 'm2-' if win else '' %}
+{% set native = 'm2w64-' if win else '' %}
+{% set prefix = 'Library/' if win else '' %}
 
 package:
-  name: poppler
+  name: poppler-split
   version: {{ version }}
 
 source:
-  url: https://poppler.freedesktop.org/poppler-{{ version }}.tar.xz
-  sha256: 31b76b5cac0a48612fdd154c02d9eca01fd38fb8eaa77c1196840ecdeb53a584
-  patches:
-    - g-ir-scanner-libpath.patch
-    - cmakelists.win.patch  # [win]
-    - exportsymbols.patch  # [win]
-    # system headers must be included before jpeg on Windows
-    - includesystembeforejpeg.patch  # [win]
-    - vs2015-no-for-loop-constexpr.win.patch  # [win]
+  url: https://fossies.org/linux/misc/poppler-22.12.0.tar.xz
+  # we use different source as our firewall does strange things
+  # url: https://poppler.freedesktop.org/poppler-{{ version }}.tar.xz
+  sha256: d9aa9cacdfbd0f8e98fc2b3bb008e645597ed480685757c3e7bc74b4278d15c0
+  patches:                            # [win]
+    - exportsymbols.patch             # [win]
+    - windows-data.patch              # [win]
+    # libtiff uses Unix I/O even on Windows
+    # https://github.com/conda-forge/libtiff-feedstock/pull/51
+    - disable-libtiff-win32-io.patch  # [win]
+    - includesystembeforejpeg.patch   # [win]
 
 build:
-  skip: True  # [win]
   number: 0
-  run_exports:
-    # add new symbols often.  Don't remove symbols often at all.  Keeping default.
-    #   https://abi-laboratory.pro/tracker/timeline/poppler/
-    - {{ pin_subpackage('poppler') }}
   detect_binary_files_with_prefix: true
-  skip: true  # [s390x or (unix and (cxx_compiler == 'toolchain_cxx'))]
   missing_dso_whitelist:
    - $RPATH/libm.so.6
    - $RPATH/libc.so.6
    - $RPATH/ld-linux-x86-64.so.2
    - $RPATH/libpthread.so.0
-  ignore_run_exports:
-   - libxcb
+   - $RPATH/ld64.so.1
 
 requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - pkg-config  # [not win]
-    - cmake
-    - ninja
-    - {{ posix }}patch
-    - {{ posix }}make
-    - perl
+    - binutils  # [linux]
+    # Need these CDTs for Qt on Linux. Please keep them alphabetized!
+    - {{ cdt('libselinux-devel') }}      # [linux]
+    - {{ cdt('libxdamage') }}            # [linux]
+    - {{ cdt('libxfixes') }}             # [linux]
+    - {{ cdt('libxscrnsaver-devel') }}   # [linux and not ppc64le]
+    - {{ cdt('libxtst-devel') }}         # [linux and not ppc64le]
+    - {{ cdt('libxxf86vm') }}            # [linux]
+    - {{ cdt('mesa-libgl-devel') }}      # [linux and not s390x]
+    - {{ cdt('mesa-libegl-devel') }}     # [linux and not ppc64le]
+    - {{ cdt('mesa-libgbm') }}           # [linux and not ppc64le]
+    - {{ cdt('mesa-dri-drivers') }}      # [linux]
     - {{ cdt('libx11-devel') }}          # [linux]
     - {{ cdt('libxau-devel') }}          # [linux]
     - {{ cdt('libxext-devel') }}         # [linux]
     - {{ cdt('libxrender-devel') }}      # [linux]
     - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
-  host:
-    - python >=3.6
-    - boost-cpp
-    - cairo  # [not win]
-    - curl
-    - freetype
-    - glib
+    - m2-msys2-runtime  # [win]
+    - pkg-config
+    - cmake
+    - {{ posix }}make
+    - ninja
+    - {{ posix }}patch
+    - perl 5.*
     - gobject-introspection 1.*  # [not win]
-    - jpeg
-    - libiconv                           # [osx]
-    - libpng
-    - libtiff
-    - libxcb                             # [linux]
-    - openjpeg >=2
-    - zlib
-    - fontconfig
-    - libcurl
-    - gettext  # [osx]
-  run:
-    - poppler-data
-    - cairo  # [not win]
+  host:
+    - python 3.9
+    - boost-cpp {{ boost_cpp }}
+    - cairo
     - curl
+    - fontconfig
     - freetype
+    - gettext  # [osx]
     - glib
     - jpeg
+    - lcms2
+    - libcurl
+    - libiconv
     - libpng
     - libtiff
+    - nss  # [not (win or s390x)]
     - openjpeg
-    - fontconfig
-    - libcurl
+    - qt-main  # [not (ppc64le or s390x)]
     - zlib
-    - gettext  # [osx]
 
-test:
-  commands:
-    - pdfunite --help
-    - pdftocairo --help  # [not win]
+outputs:
+  - name: poppler
+    build:
+      missing_dso_whitelist:
+        - $RPATH/libm.so.6
+        - $RPATH/libc.so.6
+        - $RPATH/ld-linux-x86-64.so.2
+        - $RPATH/libpthread.so.0
+        - $RPATH/ld64.so.1
+    script: install.sh   # [unix]
+    script: install.bat  # [not unix]
+    requirements:
+      build:
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}
+        # Need these CDTs for Qt on Linux. Please keep them alphabetized!
+        - {{ cdt('libselinux-devel') }}      # [linux]
+        - {{ cdt('libxdamage') }}            # [linux]
+        - {{ cdt('libxfixes') }}             # [linux]
+        - {{ cdt('libxscrnsaver-devel') }}   # [linux and not ppc64le]
+        - {{ cdt('libxtst-devel') }}         # [linux and not ppc64le]
+        - {{ cdt('libxxf86vm') }}            # [linux]
+        - {{ cdt('mesa-libgl-devel') }}      # [linux and not s390x]
+        - {{ cdt('mesa-libegl-devel') }}     # [linux and not ppc64le]
+        - {{ cdt('mesa-libgbm') }}           # [linux and not ppc64le]
+        - {{ cdt('mesa-dri-drivers') }}      # [linux]
+        - {{ cdt('libxau-devel') }}          # [linux]
+        - {{ cdt('libxext-devel') }}         # [linux]
+        - {{ cdt('libxrender-devel') }}      # [linux]
+        - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
+        - m2-msys2-runtime  # [win]
+        - pkg-config
+        - cmake
+        - {{ posix }}make
+        - ninja
+        - {{ posix }}patch
+        - perl 5.*
+        - gobject-introspection 1.*  # [not win]
+
+      host:
+        - python 3.9
+        - boost-cpp {{ boost_cpp }}
+        - cairo
+        - curl
+        - fontconfig
+        - freetype
+        - gettext  # [osx]
+        - glib
+        - jpeg
+        - lcms2
+        - libcurl
+        - libiconv
+        - libpng
+        - libtiff
+        - nss  # [not (win or s390x)]
+        - openjpeg
+        - zlib
+        - nspr  # [not win]
+
+      run:
+        - {{ pin_compatible('boost-cpp') }}
+        - poppler-data
+
+    test:
+      commands:
+        - pdfinfo -listenc
+        - pdfunite --help
+        - pdftocairo --help
+
+  - name: poppler-qt
+    build:
+      skip: true  # [ppc64le or s390x]
+      missing_dso_whitelist:
+        - $RPATH/libm.so.6
+        - $RPATH/libc.so.6
+        - $RPATH/ld-linux-x86-64.so.2
+        - $RPATH/libpthread.so.0
+        - $RPATH/poppler.dll
+        - $RPATH/ld64.so.1
+    script: install.sh  # [unix]
+    script: install.bat  # [not unix]
+    requirements:
+      build:
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}
+        # Need these CDTs for Qt on Linux. Please keep them alphabetized!
+        - {{ cdt('libselinux-devel') }}      # [linux]
+        - {{ cdt('libxdamage') }}            # [linux]
+        - {{ cdt('libxfixes') }}             # [linux]
+        - {{ cdt('libxscrnsaver-devel') }}   # [linux and not ppc64le]
+        - {{ cdt('libxtst-devel') }}         # [linux and not ppc64le]
+        - {{ cdt('libxxf86vm') }}            # [linux]
+        - {{ cdt('mesa-libgl-devel') }}      # [linux and not s390x]
+        - {{ cdt('mesa-libegl-devel') }}     # [linux and not ppc64le]
+        - {{ cdt('mesa-libgbm') }}           # [linux and not ppc64le]
+        - {{ cdt('mesa-dri-drivers') }}      # [linux]
+        - {{ cdt('libx11-devel') }}          # [linux]
+        - {{ cdt('libxau-devel') }}          # [linux]
+        - {{ cdt('libxext-devel') }}         # [linux]
+        - {{ cdt('libxrender-devel') }}      # [linux]
+        - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
+        - m2-msys2-runtime  # [win]
+        - {{ native }}pkg-config
+        - cmake
+        - {{ posix }}make
+        - ninja
+        - {{ posix }}patch
+        - perl 5.*
+        - gobject-introspection 1.*  # [not win]
+
+      host:
+        - python 3.9
+        - boost-cpp {{ boost_cpp }}
+        - cairo
+        - curl
+        - fontconfig
+        - freetype
+        - gettext  # [osx]
+        - glib
+        - jpeg
+        - lcms2
+        - libcurl
+        - libiconv
+        - libpng
+        - libtiff
+        - nss  # [not (win or s390x)]
+        - openjpeg
+        - qt-main  # [not (ppc64le or s390x)]
+        - zlib
+        - {{ pin_subpackage('poppler', exact=True) }}
+        - nspr  # [not win]
+      run:
+        - {{ pin_subpackage('poppler', exact=True) }}
+
+    test:
+      commands:
+        - test -f ${PREFIX}/lib/pkgconfig/poppler-qt5.pc  # [not win]
+        - if not exist %LIBRARY_BIN%\\poppler.dll exit 1  # [win]
 
 about:
   home: https://poppler.freedesktop.org/
-  license: GPLv2
+  license: GPL-2.0-only
   license_family: GPL
   license_file: COPYING
-  summary: 'The Poppler PDF manipulation library.'
-
+  summary: The Poppler PDF manipulation library.
+  description: |
+    Poppler is a PDF rendering library based on the xpdf-3.0 code base.
+  doc_url: https://poppler.freedesktop.org/
+  dev_url: https://cgit.freedesktop.org/poppler/poppler
 extra:
+  feedstock-name: poppler
   recipe-maintainers:
+    - katietz
     - pkgw
     - ocefpaf
+    - xhochy
+    - xylar

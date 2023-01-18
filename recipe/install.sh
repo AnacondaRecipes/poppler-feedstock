@@ -12,9 +12,6 @@ if [ -n "$OSX_ARCH" ] ; then
     # libraries to shared libraries: poppler".
     export LDFLAGS="$(echo $LDFLAGS |sed -e "s/-Wl,-dead_strip_dylibs//g")"
     export LDFLAGS_LD="$(echo $LDFLAGS_LD |sed -e "s/-dead_strip_dylibs//g")"
-
-    # See: https://conda-forge.org/docs/maintainer/knowledge_base.html#newer-c-features-with-old-sdk
-    export CXXFLAGS="${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY"
 fi
 
 if [[ ${target_platform} == linux-ppc64le ]]; then
@@ -27,16 +24,36 @@ if [[ ${target_platform} == linux-ppc64le ]]; then
   export CXXFLAGS="${CXXFLAGS} -Wno-enum-conversion -Wno-maybe-uninitialized -fno-lto"
 fi
 
-mkdir -p build
-cd build
-
 export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$BUILD_PREFIX/lib/pkgconfig"
 
-cmake ${CMAKE_ARGS} ${EXTRA_CMAKE_ARGS} \
-    -GNinja \
-    -DCMAKE_PREFIX_PATH=$PREFIX \
-    -DCMAKE_INSTALL_PREFIX=$PREFIX \
-    $SRC_DIR
+cd build
+ninja install
 
-ninja
-# ctest  # no tests were found :-/
+rm -rf ${PREFIX}/lib/libpoppler*.la ${PREFIX}/lib/libpoppler*.a ${PREFIX}/share/gtk-doc
+
+if [[ "$PKG_NAME" == poppler ]]
+then
+    rm -rf ${PREFIX}/include/poppler/qt5
+    rm -rf ${PREFIX}/lib/libpoppler-qt5.*
+    rm -rf ${PREFIX}/lib/pkgconfig/poppler-qt5.pc
+fi
+
+if [[ "$PKG_NAME" == poppler-qt ]]
+then
+    rm -f ${PREFIX}/bin/pdf*
+    rm -f ${PREFIX}/include/poppler/*.h
+    rm -rf ${PREFIX}/include/poppler/cpp
+    rm -rf ${PREFIX}/include/poppler/fofi
+    rm -rf ${PREFIX}/include/poppler/glib
+    rm -rf ${PREFIX}/include/poppler/goo
+    rm -rf ${PREFIX}/include/poppler/splash
+    rm -f ${PREFIX}/lib/girepository-1.0/Poppler-*.typelib
+    rm -f ${PREFIX}/lib/libpoppler.*
+    rm -f ${PREFIX}/lib/libpoppler-cpp.*
+    rm -f ${PREFIX}/lib/libpoppler-glib.*
+    rm -f ${PREFIX}/lib/pkgconfig/poppler.pc
+    rm -f ${PREFIX}/lib/pkgconfig/poppler-cpp.pc
+    rm -f ${PREFIX}/lib/pkgconfig/poppler-glib.pc
+    rm -f ${PREFIX}/share/gir-1.0/Poppler-*.gir
+    rm -f ${PREFIX}/share/man/man1/pdf*
+fi
