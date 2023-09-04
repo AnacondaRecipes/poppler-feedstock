@@ -8,7 +8,7 @@ package:
   version: {{ version }}
 
 source:
-  url:  https://poppler.freedesktop.org/poppler-22.11.0.tar.xz
+  url: https://gitlab.freedesktop.org/poppler/poppler/-/archive/poppler-{{ version }}/poppler-poppler-{{ version }}.tar.bz2
   sha256: 4931aa43ecc42fbda4a8dbbc0367dcb6d1ce0136ae20c6c369570fd5a5acc49e
   patches:                            # [win]
     - exportsymbols.patch             # [win]
