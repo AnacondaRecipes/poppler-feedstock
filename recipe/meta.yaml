@@ -8,10 +8,8 @@ package:
   version: {{ version }}
 
 source:
-  url: https://fossies.org/linux/misc/poppler-22.12.0.tar.xz
-  # we use different source as our firewall does strange things
-  # url: https://poppler.freedesktop.org/poppler-{{ version }}.tar.xz
-  sha256: d9aa9cacdfbd0f8e98fc2b3bb008e645597ed480685757c3e7bc74b4278d15c0
+  url: https://gitlab.freedesktop.org/poppler/poppler/-/archive/poppler-{{ version }}/poppler-poppler-{{ version }}.tar.bz2
+  sha256: 4931aa43ecc42fbda4a8dbbc0367dcb6d1ce0136ae20c6c369570fd5a5acc49e
   patches:                            # [win]
     - exportsymbols.patch             # [win]
     - windows-data.patch              # [win]
@@ -21,7 +19,7 @@ source:
     - includesystembeforejpeg.patch   # [win]
 
 build:
-  number: 0
+  number: 1
   detect_binary_files_with_prefix: true
   missing_dso_whitelist:
    - $RPATH/libm.so.6
