@@ -217,6 +217,13 @@ outputs:
         - test -f ${PREFIX}/lib/pkgconfig/poppler-qt5.pc  # [not win]
         - if not exist %LIBRARY_BIN%\\poppler.dll exit 1  # [win]
 
+  - name: poppler-cpp
+    requirements:
+      build:
+        - {{ compiler('cxx') }}
+      run:
+        - {{ pin_subpackage('poppler', exact=True) }}
+
 about:
   home: https://poppler.freedesktop.org/
   license: GPL-2.0-only
