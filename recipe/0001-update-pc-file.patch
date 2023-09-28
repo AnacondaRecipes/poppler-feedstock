@@ -1,0 +1,26 @@
+From 42b19965dfbeceee44d6b67ddea783274b31ecf5 Mon Sep 17 00:00:00 2001
+From: Marek Waszkiewicz <mwaszkiewicz@anaconda.com>
+Date: Thu, 28 Sep 2023 21:52:23 +0200
+Subject: [PATCH] update pc file
+
+---
+ poppler-cpp.pc.cmake | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/poppler-cpp.pc.cmake b/poppler-cpp.pc.cmake
+index 3eb68b38..b3d16476 100644
+--- a/poppler-cpp.pc.cmake
++++ b/poppler-cpp.pc.cmake
+@@ -1,6 +1,6 @@
+-prefix=@CMAKE_INSTALL_PREFIX@
+-libdir=@CMAKE_INSTALL_FULL_LIBDIR@
+-includedir=@CMAKE_INSTALL_FULL_INCLUDEDIR@
++prefix=%LIBRARY_PREFIX%
++libdir=%LIBRARY_LIB%
++includedir=%LIBRARY_PREFIX%/include
+ 
+ Name: poppler-cpp
+ Description: cpp backend for Poppler PDF rendering library
+-- 
+2.25.1
+
