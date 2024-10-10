@@ -1,4 +1,4 @@
-{% set version = "22.12.0" %}
+{% set version = "24.09.0" %}
 {% set posix = 'm2-' if win else '' %}
 {% set native = 'm2w64-' if win else '' %}
 {% set prefix = 'Library/' if win else '' %}
@@ -8,19 +8,24 @@ package:
   version: {{ version }}
 
 source:
-  url: https://gitlab.freedesktop.org/poppler/poppler/-/archive/poppler-{{ version }}/poppler-poppler-{{ version }}.tar.bz2
-  sha256: 4931aa43ecc42fbda4a8dbbc0367dcb6d1ce0136ae20c6c369570fd5a5acc49e
-  patches:                            # [win]
-    - exportsymbols.patch             # [win]
-    - windows-data.patch              # [win]
-    - 0001-update-pc-file.patch       # [win]
-    # libtiff uses Unix I/O even on Windows
-    # https://github.com/conda-forge/libtiff-feedstock/pull/51
-    - disable-libtiff-win32-io.patch  # [win]
-    - includesystembeforejpeg.patch   # [win]
+  - url: https://gitlab.freedesktop.org/poppler/poppler/-/archive/poppler-{{ version }}/poppler-poppler-{{ version }}.tar.bz2
+    sha256: dce88f84640b2a8592f7b9edbbefc563f584ef87fdf20359fa479367894f45df
+    patches:                            # [win]
+      - exportsymbols.patch             # [win]
+      - windows-data.patch              # [win]
+      - 0001-update-pc-file.patch       # [win]
+      # libtiff uses Unix I/O even on Windows
+      # https://github.com/conda-forge/libtiff-feedstock/pull/51
+      - disable-libtiff-win32-io.patch  # [win]
+      - includesystembeforejpeg.patch   # [win]
+
+  - url: https://gitlab.freedesktop.org/poppler/test/-/archive/master/test-master.tar.bz2  # [not win]
+    folder: test_suite                                                                     # [not win]
 
 build:
-  number: 3
+  number: 0
+  # Missing qt-main dependency for s390x.
+  skip: true  # [s390x]
   detect_binary_files_with_prefix: true
   missing_dso_whitelist:
    - $RPATH/libm.so.6
@@ -31,9 +36,12 @@ build:
 
 requirements:
   build:
+    # setuptools >= 65.0.0 is lacking the msvccompiler module in distutils.
+    # https://github.com/pypa/setuptools/pull/3505
+    - setuptools <65
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - binutils  # [linux]
+    - binutils                           # [linux]
     # Need these CDTs for Qt on Linux. Please keep them alphabetized!
     - {{ cdt('libselinux-devel') }}      # [linux]
     - {{ cdt('libxdamage') }}            # [linux]
@@ -50,21 +58,23 @@ requirements:
     - {{ cdt('libxext-devel') }}         # [linux]
     - {{ cdt('libxrender-devel') }}      # [linux]
     - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
-    - m2-msys2-runtime  # [win]
-    - pkg-config
+    - m2-msys2-runtime                   # [win]
+    - m2-patch                           # [win]
+    - {{ native }}pkg-config
     - cmake
     - {{ posix }}make
     - ninja
-    - {{ posix }}patch
     - perl 5.*
     - gobject-introspection 1.*  # [not win]
+    - qt-main                    # [not (ppc64le or s390x)]
   host:
-    - python 3.9
+    # Need python to run glib-mkenums.
+    - python
     - boost-cpp {{ boost_cpp }}
     - cairo
     - curl
     - fontconfig
-    - freetype
+    - freetype >=2.11
     - gettext  # [osx]
     - glib
     - jpeg
@@ -73,9 +83,8 @@ requirements:
     - libiconv
     - libpng
     - libtiff
-    - nss  # [not (win or s390x)]
+    - nss  # [not win]
     - openjpeg
-    - qt-main  # [not (ppc64le or s390x)]
     - zlib
 
 outputs:
@@ -91,6 +100,9 @@ outputs:
     script: install.bat  # [not unix]
     requirements:
       build:
+        # setuptools >= 65.0.0 is lacking the msvccompiler module in distutils.
+        # https://github.com/pypa/setuptools/pull/3505
+        - setuptools <65
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         # Need these CDTs for Qt on Linux. Please keep them alphabetized!
@@ -108,22 +120,22 @@ outputs:
         - {{ cdt('libxext-devel') }}         # [linux]
         - {{ cdt('libxrender-devel') }}      # [linux]
         - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
-        - m2-msys2-runtime  # [win]
-        - pkg-config
+        - m2-msys2-runtime                   # [win]
+        - m2-patch                           # [win]
+        - {{ native }}pkg-config
         - cmake
         - {{ posix }}make
         - ninja
-        - {{ posix }}patch
         - perl 5.*
         - gobject-introspection 1.*  # [not win]
+        - qt-main                    # [not (ppc64le or s390x)]
 
       host:
-        - python 3.9
         - boost-cpp {{ boost_cpp }}
         - cairo
         - curl
         - fontconfig
-        - freetype
+        - freetype >=2.11
         - gettext  # [osx]
         - glib
         - jpeg
@@ -132,7 +144,7 @@ outputs:
         - libiconv
         - libpng
         - libtiff
-        - nss  # [not (win or s390x)]
+        - nss  # [not win]
         - openjpeg
         - zlib
         - nspr  # [not win]
@@ -157,10 +169,13 @@ outputs:
         - $RPATH/libpthread.so.0
         - $RPATH/poppler.dll
         - $RPATH/ld64.so.1
-    script: install.sh  # [unix]
+    script: install.sh   # [unix]
     script: install.bat  # [not unix]
     requirements:
       build:
+        # setuptools >= 65.0.0 is lacking the msvccompiler module in distutils.
+        # https://github.com/pypa/setuptools/pull/3505
+        - setuptools <65
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         # Need these CDTs for Qt on Linux. Please keep them alphabetized!
@@ -179,22 +194,22 @@ outputs:
         - {{ cdt('libxext-devel') }}         # [linux]
         - {{ cdt('libxrender-devel') }}      # [linux]
         - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
-        - m2-msys2-runtime  # [win]
+        - m2-msys2-runtime                   # [win]
+        - m2-patch                           # [win]
         - {{ native }}pkg-config
         - cmake
         - {{ posix }}make
         - ninja
-        - {{ posix }}patch
         - perl 5.*
         - gobject-introspection 1.*  # [not win]
+        - qt-main                    # [not (ppc64le or s390x)]
 
       host:
-        - python 3.9
         - boost-cpp {{ boost_cpp }}
         - cairo
         - curl
         - fontconfig
-        - freetype
+        - freetype >=2.11
         - gettext  # [osx]
         - glib
         - jpeg
@@ -203,9 +218,8 @@ outputs:
         - libiconv
         - libpng
         - libtiff
-        - nss  # [not (win or s390x)]
+        - nss  # [not win]
         - openjpeg
-        - qt-main  # [not (ppc64le or s390x)]
         - zlib
         - {{ pin_subpackage('poppler', exact=True) }}
         - nspr  # [not win]
@@ -226,7 +240,7 @@ about:
   description: |
     Poppler is a PDF rendering library based on the xpdf-3.0 code base.
   doc_url: https://poppler.freedesktop.org/
-  dev_url: https://cgit.freedesktop.org/poppler/poppler
+  dev_url: https://gitlab.freedesktop.org/poppler/poppler
 extra:
   feedstock-name: poppler
   recipe-maintainers:

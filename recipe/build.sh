@@ -2,7 +2,10 @@
 
 set -e
 
-export EXTRA_CMAKE_ARGS="-GNinja -DCMAKE_INSTALL_LIBDIR=lib -DENABLE_UNSTABLE_API_ABI_HEADERS=ON -DENABLE_LIBCURL=ON -DENABLE_LIBOPENJPEG=openjpeg2"
+# Ensure we look in the correct directory for gir files
+export XDG_DATA_DIRS="$PREFIX/share"
+
+export EXTRA_CMAKE_ARGS="-GNinja -DCMAKE_INSTALL_LIBDIR=lib -DENABLE_UNSTABLE_API_ABI_HEADERS=ON -DENABLE_GPGME=OFF -DENABLE_LIBCURL=ON -DENABLE_LIBOPENJPEG=openjpeg2 -DENABLE_QT6=OFF"
 
 if [ -n "$OSX_ARCH" ] ; then
     # The -dead_strip_dylibs option breaks g-ir-scanner in this package: the
@@ -36,7 +39,10 @@ cmake ${CMAKE_ARGS} ${EXTRA_CMAKE_ARGS} \
     -GNinja \
     -DCMAKE_PREFIX_PATH=$PREFIX \
     -DCMAKE_INSTALL_PREFIX=$PREFIX \
+    -DTESTDATADIR=$SRC_DIR/test_suite \
     $SRC_DIR
 
 ninja
 # ctest  # no tests were found :-/
+
+ninja test

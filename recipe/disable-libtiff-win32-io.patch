@@ -5,7 +5,7 @@ index 98cbea5..65e99a1 100644
 @@ -164,12 +164,12 @@ bool TiffWriter::init(FILE *openedFile, int width, int height, int hDPI, int vDP
          return false;
      }
- 
+
 -#    ifdef _WIN32
 -    // Convert C Library handle to Win32 Handle
 -    priv->f = TIFFFdOpen(_get_osfhandle(fileno(openedFile)), "-", "w");
@@ -18,6 +18,6 @@ index 98cbea5..65e99a1 100644
 +    // once in TIFFClose(), and once in the caller, which expects to
 +    // have to fclose(openedFile) itself.
 +    priv->f = TIFFFdOpen(dup(fileno(openedFile)), "-", "w");
- 
+
      if (!priv->f) {
          return false;
