@@ -23,7 +23,7 @@ source:
     folder: test_suite                                                                     # [not win]
 
 build:
-  number: 0
+  number: 1
   # Missing qt-main dependency for s390x.
   skip: true  # [s390x]
   detect_binary_files_with_prefix: true
@@ -36,6 +36,7 @@ build:
 
 requirements:
   build:
+    # gobject-introspection 1.* requires setuptools at runtime, but
     # setuptools >= 65.0.0 is lacking the msvccompiler module in distutils.
     # https://github.com/pypa/setuptools/pull/3505
     - setuptools <65
@@ -78,11 +79,11 @@ requirements:
     - gettext  # [osx]
     - glib
     - jpeg
-    - lcms2
+    - lcms2 2.16
     - libcurl
     - libiconv
     - libpng
-    - libtiff
+    - libtiff 4.5.1
     - nss  # [not win]
     - openjpeg
     - zlib
@@ -139,11 +140,11 @@ outputs:
         - gettext  # [osx]
         - glib
         - jpeg
-        - lcms2
+        - lcms2 2.16
         - libcurl
         - libiconv
         - libpng
-        - libtiff
+        - libtiff 4.5.1
         - nss  # [not win]
         - openjpeg
         - zlib
@@ -213,11 +214,11 @@ outputs:
         - gettext  # [osx]
         - glib
         - jpeg
-        - lcms2
+        - lcms2 2.16
         - libcurl
         - libiconv
         - libpng
-        - libtiff
+        - libtiff 4.5.1
         - nss  # [not win]
         - openjpeg
         - zlib
