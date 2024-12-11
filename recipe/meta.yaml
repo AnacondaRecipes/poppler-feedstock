@@ -83,7 +83,7 @@ requirements:
     - libcurl
     - libiconv
     - libpng
-    - libtiff 4.5.1
+    - libtiff {{ libtiff }}
     - nss  # [not win]
     - openjpeg
     - zlib
@@ -144,7 +144,7 @@ outputs:
         - libcurl
         - libiconv
         - libpng
-        - libtiff 4.5.1
+        - libtiff {{ libtiff }}
         - nss  # [not win]
         - openjpeg
         - zlib
@@ -218,7 +218,7 @@ outputs:
         - libcurl
         - libiconv
         - libpng
-        - libtiff 4.5.1
+        - libtiff {{ libtiff }}
         - nss  # [not win]
         - openjpeg
         - zlib
