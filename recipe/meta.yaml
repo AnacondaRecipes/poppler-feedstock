@@ -83,7 +83,9 @@ requirements:
     - libcurl
     - libiconv
     - libpng
-    - libtiff {{ libtiff }}
+    # libtiff 4.5.1 fixes a missing libtiff.lib on Windows
+    - libtiff 4.5.1          # [win]
+    - libtiff {{ libtiff }}  # [not win]
     - nss  # [not win]
     - openjpeg
     - zlib
@@ -144,7 +146,9 @@ outputs:
         - libcurl
         - libiconv
         - libpng
-        - libtiff {{ libtiff }}
+        # libtiff 4.5.1 fixes a missing libtiff.lib on Windows
+        - libtiff 4.5.1          # [win]
+        - libtiff {{ libtiff }}  # [not win]
         - nss  # [not win]
         - openjpeg
         - zlib
@@ -218,7 +222,9 @@ outputs:
         - libcurl
         - libiconv
         - libpng
-        - libtiff {{ libtiff }}
+        # libtiff 4.5.1 fixes a missing libtiff.lib on Windows
+        - libtiff 4.5.1          # [win]
+        - libtiff {{ libtiff }}  # [not win]
         - nss  # [not win]
         - openjpeg
         - zlib
