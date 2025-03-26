@@ -144,7 +144,7 @@ outputs:
         - libcurl
         - libiconv
         - libpng
-        - libtiff {{ libtiff }}
+        - libtiff 4.7.0
         - nss  # [not win]
         - openjpeg
         - zlib
@@ -218,7 +218,7 @@ outputs:
         - libcurl
         - libiconv
         - libpng
-        - libtiff {{ libtiff }}
+        - libtiff 4.7.0
         - nss  # [not win]
         - openjpeg
         - zlib
