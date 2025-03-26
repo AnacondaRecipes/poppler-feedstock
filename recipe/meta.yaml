@@ -23,7 +23,7 @@ source:
     folder: test_suite                                                                     # [not win]
 
 build:
-  number: 1
+  number: 2
   # Missing qt-main dependency for s390x.
   skip: true  # [s390x]
   detect_binary_files_with_prefix: true
@@ -83,7 +83,7 @@ requirements:
     - libcurl
     - libiconv
     - libpng
-    - libtiff {{ libtiff }}
+    - libtiff 4.7.0
     - nss  # [not win]
     - openjpeg
     - zlib
