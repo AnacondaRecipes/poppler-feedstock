@@ -20,6 +20,7 @@ source:
       - includesystembeforejpeg.patch   # [win]
 
   - url: https://gitlab.freedesktop.org/poppler/test/-/archive/master/test-master.tar.bz2  # [not win]
+    sha256: 91d623635677f716c4dcc69c81af95b61c55c1820b1e218c0cb63d2c68db960c
     folder: test_suite                                                                     # [not win]
 
 build:
