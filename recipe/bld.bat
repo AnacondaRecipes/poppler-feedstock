@@ -15,7 +15,7 @@ cmake -G "Ninja" ^
       -D ENABLE_LIBCURL=True ^
       -D ENABLE_LIBOPENJPEG=openjpeg2 ^
       -D ENABLE_NSS3=OFF ^
-      -D ENABLE_QT6=OFF ^
+      -D ENABLE_QT6=ON ^
       -D ENABLE_QT5=OFF ^
       -D GLIB2_MKENUMS_PYTHON=%PYTHON% ^
        %SRC_DIR%
