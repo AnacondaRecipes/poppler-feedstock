@@ -28,11 +28,11 @@ build:
   skip: true  # [s390x]
   detect_binary_files_with_prefix: true
   missing_dso_whitelist:
-   - $RPATH/libm.so.6
-   - $RPATH/libc.so.6
-   - $RPATH/ld-linux-x86-64.so.2
-   - $RPATH/libpthread.so.0
-   - $RPATH/ld64.so.1
+    - $RPATH/libm.so.6
+    - $RPATH/libc.so.6
+    - $RPATH/ld-linux-x86-64.so.2
+    - $RPATH/libpthread.so.0
+    - $RPATH/ld64.so.1
 
 requirements:
   build:
