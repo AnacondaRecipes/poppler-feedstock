@@ -36,9 +36,9 @@ rm -rf ${PREFIX}/lib/libpoppler*.la ${PREFIX}/lib/libpoppler*.a ${PREFIX}/share/
 
 if [[ "$PKG_NAME" == poppler ]]
 then
-    rm -rf ${PREFIX}/include/poppler/qt6
-    rm -rf ${PREFIX}/lib/libpoppler-qt6.*
-    rm -rf ${PREFIX}/lib/pkgconfig/poppler-qt6.pc
+    rm -rf ${PREFIX}/include/poppler/qt5
+    rm -rf ${PREFIX}/lib/libpoppler-qt5.*
+    rm -rf ${PREFIX}/lib/pkgconfig/poppler-qt5.pc
 fi
 
 if [[ "$PKG_NAME" == poppler-qt ]]

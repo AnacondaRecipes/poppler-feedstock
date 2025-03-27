@@ -68,7 +68,7 @@ requirements:
     - ninja
     - perl 5.*
     - gobject-introspection 1.*  # [not win]
-    - qt-main 6                   # [not (ppc64le or s390x)]
+    - qt-main 5                   # [not (ppc64le or s390x)]
   host:
     # Need python to run glib-mkenums.
     - python
@@ -130,7 +130,7 @@ outputs:
         - ninja
         - perl 5.*
         - gobject-introspection 1.*  # [not win]
-        - qt-main 6                   # [not (ppc64le or s390x)]
+        - qt-main 5                   # [not (ppc64le or s390x)]
 
       host:
         - boost-cpp {{ boost_cpp }}
@@ -204,7 +204,7 @@ outputs:
         - ninja
         - perl 5.*
         - gobject-introspection 1.*  # [not win]
-        - qt-main                    # [not (ppc64le or s390x)]
+        - qt-main 5                   # [not (ppc64le or s390x)]
 
       host:
         - boost-cpp {{ boost_cpp }}
@@ -230,7 +230,7 @@ outputs:
 
     test:
       commands:
-        - test -f ${PREFIX}/lib/pkgconfig/poppler-qt6.pc  # [not win]
+        - test -f ${PREFIX}/lib/pkgconfig/poppler-qt5.pc  # [not win]
         - if not exist %LIBRARY_BIN%\\poppler.dll exit 1  # [win]
 
 about:
