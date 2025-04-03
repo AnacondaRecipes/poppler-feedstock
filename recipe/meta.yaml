@@ -86,7 +86,7 @@ requirements:
     - libpng
     - libtiff 4.7.0
     - nss  # [not win]
-    - openjpeg
+    - openjpeg 2.5.2
     - zlib
 
 outputs:
