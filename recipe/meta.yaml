@@ -147,7 +147,7 @@ outputs:
         - libpng
         - libtiff 4.7.0
         - nss  # [not win]
-        - openjpeg
+        - openjpeg 2.5.2
         - zlib
         - nspr  # [not win]
 
@@ -221,7 +221,7 @@ outputs:
         - libpng
         - libtiff 4.7.0
         - nss  # [not win]
-        - openjpeg
+        - openjpeg 2.5.2
         - zlib
         - {{ pin_subpackage('poppler', exact=True) }}
         - nspr  # [not win]
