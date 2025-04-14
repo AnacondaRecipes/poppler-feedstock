@@ -20,19 +20,20 @@ source:
       - includesystembeforejpeg.patch   # [win]
 
   - url: https://gitlab.freedesktop.org/poppler/test/-/archive/master/test-master.tar.bz2  # [not win]
+    sha256: 91d623635677f716c4dcc69c81af95b61c55c1820b1e218c0cb63d2c68db960c               # [not win]
     folder: test_suite                                                                     # [not win]
 
 build:
-  number: 1
+  number: 2
   # Missing qt-main dependency for s390x.
   skip: true  # [s390x]
   detect_binary_files_with_prefix: true
   missing_dso_whitelist:
-   - $RPATH/libm.so.6
-   - $RPATH/libc.so.6
-   - $RPATH/ld-linux-x86-64.so.2
-   - $RPATH/libpthread.so.0
-   - $RPATH/ld64.so.1
+    - $RPATH/libm.so.6
+    - $RPATH/libc.so.6
+    - $RPATH/ld-linux-x86-64.so.2
+    - $RPATH/libpthread.so.0
+    - $RPATH/ld64.so.1
 
 requirements:
   build:
@@ -67,7 +68,7 @@ requirements:
     - ninja
     - perl 5.*
     - gobject-introspection 1.*  # [not win]
-    - qt-main                    # [not (ppc64le or s390x)]
+    - qt-main 5                   # [not (ppc64le or s390x)]
   host:
     # Need python to run glib-mkenums.
     - python
@@ -85,7 +86,7 @@ requirements:
     - libpng
     - libtiff {{ libtiff }}
     - nss  # [not win]
-    - openjpeg
+    - openjpeg 2.5.2
     - zlib
 
 outputs:
@@ -129,7 +130,7 @@ outputs:
         - ninja
         - perl 5.*
         - gobject-introspection 1.*  # [not win]
-        - qt-main                    # [not (ppc64le or s390x)]
+        - qt-main 5                   # [not (ppc64le or s390x)]
 
       host:
         - boost-cpp {{ boost_cpp }}
@@ -146,7 +147,7 @@ outputs:
         - libpng
         - libtiff {{ libtiff }}
         - nss  # [not win]
-        - openjpeg
+        - openjpeg 2.5.2
         - zlib
         - nspr  # [not win]
 
@@ -203,7 +204,7 @@ outputs:
         - ninja
         - perl 5.*
         - gobject-introspection 1.*  # [not win]
-        - qt-main                    # [not (ppc64le or s390x)]
+        - qt-main 5                   # [not (ppc64le or s390x)]
 
       host:
         - boost-cpp {{ boost_cpp }}
@@ -220,7 +221,7 @@ outputs:
         - libpng
         - libtiff {{ libtiff }}
         - nss  # [not win]
-        - openjpeg
+        - openjpeg 2.5.2
         - zlib
         - {{ pin_subpackage('poppler', exact=True) }}
         - nspr  # [not win]

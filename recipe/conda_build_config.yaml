@@ -1,6 +1,2 @@
-c_compiler:    # [win]
-  - vs2019     # [win]
-cxx_compiler:  # [win]
-  - vs2019     # [win]
 boost_cpp:
   - 1.82
