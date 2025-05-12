@@ -18,48 +18,26 @@ source:
       # https://github.com/conda-forge/libtiff-feedstock/pull/51
       - disable-libtiff-win32-io.patch  # [win]
       - includesystembeforejpeg.patch   # [win]
-
   - url: https://gitlab.freedesktop.org/poppler/test/-/archive/master/test-master.tar.bz2  # [not win]
-    sha256: 91d623635677f716c4dcc69c81af95b61c55c1820b1e218c0cb63d2c68db960c               # [not win]
+    # This sha256 is always new.
+    sha256: c8572344d9d52a6a7392b0f0882e610d2eafb35667335877473621227ec95216               # [not win]
     folder: test_suite                                                                     # [not win]
 
 build:
-  number: 2
-  # Missing qt-main dependency for s390x.
-  skip: true  # [s390x]
+  number: 3
   detect_binary_files_with_prefix: true
-  missing_dso_whitelist:
-    - $RPATH/libm.so.6
-    - $RPATH/libc.so.6
-    - $RPATH/ld-linux-x86-64.so.2
-    - $RPATH/libpthread.so.0
-    - $RPATH/ld64.so.1
 
 requirements:
   build:
+    - {{ stdlib('c') }}
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - clang-format 14.0.6  # [osx]
     # gobject-introspection 1.* requires setuptools at runtime, but
     # setuptools >= 65.0.0 is lacking the msvccompiler module in distutils.
     # https://github.com/pypa/setuptools/pull/3505
     - setuptools <65
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
     - binutils                           # [linux]
-    # Need these CDTs for Qt on Linux. Please keep them alphabetized!
-    - {{ cdt('libselinux-devel') }}      # [linux]
-    - {{ cdt('libxdamage') }}            # [linux]
-    - {{ cdt('libxfixes') }}             # [linux]
-    - {{ cdt('libxscrnsaver-devel') }}   # [linux and not ppc64le]
-    - {{ cdt('libxtst-devel') }}         # [linux and not ppc64le]
-    - {{ cdt('libxxf86vm') }}            # [linux]
-    - {{ cdt('mesa-libgl-devel') }}      # [linux and not s390x]
-    - {{ cdt('mesa-libegl-devel') }}     # [linux and not ppc64le]
-    - {{ cdt('mesa-libgbm') }}           # [linux and not ppc64le]
-    - {{ cdt('mesa-dri-drivers') }}      # [linux]
-    - {{ cdt('libx11-devel') }}          # [linux]
-    - {{ cdt('libxau-devel') }}          # [linux]
-    - {{ cdt('libxext-devel') }}         # [linux]
-    - {{ cdt('libxrender-devel') }}      # [linux]
-    - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
     - m2-msys2-runtime                   # [win]
     - m2-patch                           # [win]
     - {{ native }}pkg-config
@@ -67,29 +45,36 @@ requirements:
     - {{ posix }}make
     - ninja
     - perl 5.*
-    - gobject-introspection 1.*  # [not win]
-    - qt-main 5                   # [not (ppc64le or s390x)]
+    - gobject-introspection 1.78.*  # [not win]
   host:
     # Need python to run glib-mkenums.
-    - python
+    - python 3.12  # [win]
     - boost-cpp {{ boost_cpp }}
-    - cairo
-    - curl
-    - fontconfig
-    - freetype >=2.11
-    - gettext  # [osx]
-    - glib
-    - jpeg
-    - lcms2 2.16
-    - libcurl
-    - libiconv
-    - libpng
+    - cairo {{ cairo }}
+    - curl {{ libcurl }}
+    - fontconfig {{ fontconfig }}
+    - freetype {{ freetype }}
+    - gettext {{ gettext }}  # [osx]
+    - glib {{ glib }}
+    - jpeg {{ jpeg }}
+    - lcms2 {{ lcms2 }}
+    - libcurl {{ libcurl }}
+    - libiconv {{ libiconv }}
+    - libpng {{ libpng }}
     - libtiff {{ libtiff }}
-    - nss  # [not win]
-    - openjpeg 2.5.2
-    - zlib
+    - nss {{ nss }}  # [not win]
+    - openjpeg {{ openjpeg }}
+    - zlib {{ zlib }}
+    # qtbase-devel is not available for osx-64
+    - qtbase-devel 6  # [not (osx and x86_64)]
 
 outputs:
+
+{% set win_prefix = "" %}          # [not win]
+{% set win_suffix = "" %}          # [not win]
+{% set win_prefix = "Library/" %}  # [win]
+{% set win_suffix = ".exe" %}      # [win]
+
   - name: poppler
     build:
       missing_dso_whitelist:
@@ -98,63 +83,52 @@ outputs:
         - $RPATH/ld-linux-x86-64.so.2
         - $RPATH/libpthread.so.0
         - $RPATH/ld64.so.1
-    script: install.sh   # [unix]
-    script: install.bat  # [not unix]
     requirements:
       build:
-        # setuptools >= 65.0.0 is lacking the msvccompiler module in distutils.
-        # https://github.com/pypa/setuptools/pull/3505
-        - setuptools <65
+        - {{ stdlib('c') }}
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        # Need these CDTs for Qt on Linux. Please keep them alphabetized!
-        - {{ cdt('libselinux-devel') }}      # [linux]
-        - {{ cdt('libxdamage') }}            # [linux]
-        - {{ cdt('libxfixes') }}             # [linux]
-        - {{ cdt('libxscrnsaver-devel') }}   # [linux and not ppc64le]
-        - {{ cdt('libxtst-devel') }}         # [linux and not ppc64le]
-        - {{ cdt('libxxf86vm') }}            # [linux]
-        - {{ cdt('mesa-libgl-devel') }}      # [linux and not s390x]
-        - {{ cdt('mesa-libegl-devel') }}     # [linux and not ppc64le]
-        - {{ cdt('mesa-libgbm') }}           # [linux and not ppc64le]
-        - {{ cdt('mesa-dri-drivers') }}      # [linux]
-        - {{ cdt('libxau-devel') }}          # [linux]
-        - {{ cdt('libxext-devel') }}         # [linux]
-        - {{ cdt('libxrender-devel') }}      # [linux]
-        - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
-        - m2-msys2-runtime                   # [win]
-        - m2-patch                           # [win]
-        - {{ native }}pkg-config
-        - cmake
-        - {{ posix }}make
-        - ninja
-        - perl 5.*
-        - gobject-introspection 1.*  # [not win]
-        - qt-main 5                   # [not (ppc64le or s390x)]
-
       host:
         - boost-cpp {{ boost_cpp }}
-        - cairo
-        - curl
-        - fontconfig
-        - freetype >=2.11
-        - gettext  # [osx]
-        - glib
-        - jpeg
-        - lcms2 2.16
-        - libcurl
-        - libiconv
-        - libpng
+        - cairo {{ cairo }}
+        - curl {{ libcurl }}
+        - fontconfig {{ fontconfig }}  # [unix]
+        - freetype {{ freetype }}
+        - gettext {{ gettext }}  # [osx]
+        - glib {{ glib }}
+        - jpeg {{ jpeg }}
+        - lcms2 {{ lcms2 }}
+        - libcurl {{ libcurl }}
+        - libiconv {{ libiconv }}
+        - libpng {{ libpng }}
         - libtiff {{ libtiff }}
-        - nss  # [not win]
-        - openjpeg 2.5.2
-        - zlib
-        - nspr  # [not win]
-
+        - nss {{ nss }}    # [not win]
+        - nspr {{ nspr }}  # [not win]
+        - openjpeg {{ openjpeg }}
+        - zlib {{ zlib }}
       run:
         - {{ pin_compatible('boost-cpp') }}
         - poppler-data
-
+    files:
+      - "Library/bin/poppler.dll"                      # [win]
+      - "Library/bin/poppler-cpp.dll"                  # [win]
+      - "Library/bin/poppler-glib.dll"                 # [win]
+      - "{{ win_prefix }}bin/pdf*{{ win_suffix }}"
+      - "{{ win_prefix }}include/poppler/*.h"
+      - {{ win_prefix }}include/poppler/cpp
+      - {{ win_prefix }}include/poppler/fofi
+      - {{ win_prefix }}include/poppler/glib
+      - {{ win_prefix }}include/poppler/goo
+      - {{ win_prefix }}include/poppler/splash
+      - "lib/girepository-1.0/Poppler-*.typelib"       # [not win]
+      - "{{ win_prefix }}lib/*poppler.*"
+      - "{{ win_prefix }}lib/*poppler-cpp.*"
+      - "{{ win_prefix }}lib/*poppler-glib.*"
+      - {{ win_prefix }}lib/pkgconfig/poppler.pc
+      - {{ win_prefix }}lib/pkgconfig/poppler-cpp.pc
+      - {{ win_prefix }}lib/pkgconfig/poppler-glib.pc
+      - "share/gir-1.0/Poppler-*.gir"                  # [not win]
+      - "{{ win_prefix }}share/man/man1/pdf*"
     test:
       commands:
         - pdfinfo -listenc
@@ -163,7 +137,7 @@ outputs:
 
   - name: poppler-qt
     build:
-      skip: true  # [ppc64le or s390x]
+      skip: true  # [osx and x86_64]
       missing_dso_whitelist:
         - $RPATH/libm.so.6
         - $RPATH/libc.so.6
@@ -171,66 +145,27 @@ outputs:
         - $RPATH/libpthread.so.0
         - $RPATH/poppler.dll
         - $RPATH/ld64.so.1
-    script: install.sh   # [unix]
-    script: install.bat  # [not unix]
     requirements:
       build:
-        # setuptools >= 65.0.0 is lacking the msvccompiler module in distutils.
-        # https://github.com/pypa/setuptools/pull/3505
-        - setuptools <65
+        - {{ stdlib('c') }}
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        # Need these CDTs for Qt on Linux. Please keep them alphabetized!
-        - {{ cdt('libselinux-devel') }}      # [linux]
-        - {{ cdt('libxdamage') }}            # [linux]
-        - {{ cdt('libxfixes') }}             # [linux]
-        - {{ cdt('libxscrnsaver-devel') }}   # [linux and not ppc64le]
-        - {{ cdt('libxtst-devel') }}         # [linux and not ppc64le]
-        - {{ cdt('libxxf86vm') }}            # [linux]
-        - {{ cdt('mesa-libgl-devel') }}      # [linux and not s390x]
-        - {{ cdt('mesa-libegl-devel') }}     # [linux and not ppc64le]
-        - {{ cdt('mesa-libgbm') }}           # [linux and not ppc64le]
-        - {{ cdt('mesa-dri-drivers') }}      # [linux]
-        - {{ cdt('libx11-devel') }}          # [linux]
-        - {{ cdt('libxau-devel') }}          # [linux]
-        - {{ cdt('libxext-devel') }}         # [linux]
-        - {{ cdt('libxrender-devel') }}      # [linux]
-        - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
-        - m2-msys2-runtime                   # [win]
-        - m2-patch                           # [win]
-        - {{ native }}pkg-config
-        - cmake
-        - {{ posix }}make
-        - ninja
-        - perl 5.*
-        - gobject-introspection 1.*  # [not win]
-        - qt-main 5                   # [not (ppc64le or s390x)]
-
       host:
-        - boost-cpp {{ boost_cpp }}
-        - cairo
-        - curl
-        - fontconfig
-        - freetype >=2.11
-        - gettext  # [osx]
-        - glib
-        - jpeg
-        - lcms2 2.16
-        - libcurl
-        - libiconv
-        - libpng
-        - libtiff {{ libtiff }}
-        - nss  # [not win]
-        - openjpeg 2.5.2
-        - zlib
         - {{ pin_subpackage('poppler', exact=True) }}
-        - nspr  # [not win]
+        # Only dependencies actually needed by poppler-qt
+        - freetype {{ freetype }}
+        - lcms2 {{ lcms2 }}
+        - qtbase-devel 6
       run:
         - {{ pin_subpackage('poppler', exact=True) }}
-
+    files:
+      - Library/bin/poppler-qt6.dll  # [win]
+      - {{ win_prefix }}include/poppler/qt6
+      - "{{ win_prefix }}lib/*poppler-qt6.*"
+      - {{ win_prefix }}lib/pkgconfig/poppler-qt6.pc
     test:
       commands:
-        - test -f ${PREFIX}/lib/pkgconfig/poppler-qt5.pc  # [not win]
+        - test -f ${PREFIX}/lib/pkgconfig/poppler-qt6.pc  # [not win]
         - if not exist %LIBRARY_BIN%\\poppler.dll exit 1  # [win]
 
 about:
@@ -241,8 +176,9 @@ about:
   summary: The Poppler PDF manipulation library.
   description: |
     Poppler is a PDF rendering library based on the xpdf-3.0 code base.
-  doc_url: https://poppler.freedesktop.org/
+  doc_url: https://poppler.freedesktop.org
   dev_url: https://gitlab.freedesktop.org/poppler/poppler
+
 extra:
   feedstock-name: poppler
   recipe-maintainers:
