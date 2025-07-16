@@ -5,7 +5,7 @@ set -e
 # Ensure we look in the correct directory for gir files
 export XDG_DATA_DIRS="$PREFIX/share"
 
-export EXTRA_CMAKE_ARGS="-GNinja -DCMAKE_INSTALL_LIBDIR=lib -DENABLE_UNSTABLE_API_ABI_HEADERS=ON -DENABLE_GPGME=OFF -DENABLE_LIBCURL=ON -DENABLE_LIBOPENJPEG=openjpeg2 -DENABLE_QT6=OFF"
+export EXTRA_CMAKE_ARGS="-GNinja -DCMAKE_INSTALL_LIBDIR=lib -DENABLE_UNSTABLE_API_ABI_HEADERS=ON -DENABLE_GPGME=OFF -DENABLE_LIBCURL=ON -DENABLE_LIBOPENJPEG=openjpeg2 -DENABLE_QT5=OFF"
 
 if [ -n "$OSX_ARCH" ] ; then
     # The -dead_strip_dylibs option breaks g-ir-scanner in this package: the
@@ -18,6 +18,12 @@ if [ -n "$OSX_ARCH" ] ; then
 
     # See: https://conda-forge.org/docs/maintainer/knowledge_base.html#newer-c-features-with-old-sdk
     export CXXFLAGS="${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY"
+fi
+
+if [ "$OSX_ARCH" == "x86_64" ]; then
+    export EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DENABLE_QT6=OFF"
+else
+    export EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DENABLE_QT6=ON"
 fi
 
 if [[ ${target_platform} == linux-ppc64le ]]; then
@@ -40,11 +46,10 @@ cmake ${CMAKE_ARGS} ${EXTRA_CMAKE_ARGS} \
     -DCMAKE_PREFIX_PATH=$PREFIX \
     -DCMAKE_INSTALL_PREFIX=$PREFIX \
     -DTESTDATADIR=$SRC_DIR/test_suite \
-    -DENABLE_QT6=OFF \
-    -DENABLE_QT5=ON \
     $SRC_DIR
 
 ninja
 # ctest  # no tests were found :-/
 
 ninja test
+ninja install
