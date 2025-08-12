@@ -50,6 +50,7 @@ requirements:
     # Need python to run glib-mkenums.
     - python 3.12  # [win]
     # boost-python-devel is the new replacement for boost-cpp
+    - libboost
     - libboost-python-devel
     - libboost-python
     - libboost-devel
@@ -114,7 +115,7 @@ outputs:
         - openjpeg {{ openjpeg }}
         - zlib {{ zlib }}
       run:
-        - {{ pin_compatible('boost-cpp') }}
+        - {{ pin_compatible('libboost-devel') }}
         - poppler-data
     files:
       - "Library/bin/poppler.dll"                      # [win]
