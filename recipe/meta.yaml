@@ -50,11 +50,7 @@ requirements:
     # Need python to run glib-mkenums.
     - python 3.12  # [win]
     # boost-python-devel is the new replacement for boost-cpp
-    - libboost
-    - libboost-python-devel
-    - libboost-python
-    - libboost-devel
-    - libboost-headers
+    - libboost-devel 1.88.0
     - cairo {{ cairo }}
     - curl {{ libcurl }}
     - fontconfig {{ fontconfig }}
@@ -94,10 +90,7 @@ outputs:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
       host:
-        - libboost-python-devel
-        - libboost-python
-        - libboost-devel
-        - libboost-headers
+        - libboost-devel 1.88.0
         - cairo {{ cairo }}
         - curl {{ libcurl }}
         - fontconfig {{ fontconfig }}  # [unix]
