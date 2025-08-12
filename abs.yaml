@@ -2,3 +2,5 @@
 build_parameters:
   - "--suppress-variables"
 #  - "--error-overlinking"
+channels:
+  - https://staging.continuum.io/prefect/fs/boost-feedstock/pr22/2dc38d9

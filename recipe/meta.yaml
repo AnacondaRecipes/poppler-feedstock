@@ -49,7 +49,6 @@ requirements:
   host:
     # Need python to run glib-mkenums.
     - python 3.12  # [win]
-    - boost-cpp {{ boost_cpp }}
     - cairo {{ cairo }}
     - curl {{ libcurl }}
     - fontconfig {{ fontconfig }}
