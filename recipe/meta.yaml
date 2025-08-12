@@ -24,7 +24,7 @@ source:
     folder: test_suite                                                                     # [not win]
 
 build:
-  number: 3
+  number: 4
   detect_binary_files_with_prefix: true
 
 requirements:
@@ -49,6 +49,11 @@ requirements:
   host:
     # Need python to run glib-mkenums.
     - python 3.12  # [win]
+    # boost-python-devel is the new replacement for boost-cpp
+    - libboost-python-devel
+    - libboost-python
+    - libboost-devel
+    - libboost-headers
     - cairo {{ cairo }}
     - curl {{ libcurl }}
     - fontconfig {{ fontconfig }}
@@ -88,7 +93,10 @@ outputs:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
       host:
-        - boost-cpp {{ boost_cpp }}
+        - libboost-python-devel
+        - libboost-python
+        - libboost-devel
+        - libboost-headers
         - cairo {{ cairo }}
         - curl {{ libcurl }}
         - fontconfig {{ fontconfig }}  # [unix]
