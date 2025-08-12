@@ -108,7 +108,6 @@ outputs:
         - openjpeg {{ openjpeg }}
         - zlib {{ zlib }}
       run:
-        - {{ pin_compatible('libboost-devel') }}
         - poppler-data
     files:
       - "Library/bin/poppler.dll"                      # [win]
