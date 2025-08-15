@@ -24,7 +24,7 @@ source:
     folder: test_suite                                                                     # [not win]
 
 build:
-  number: 3
+  number: 4
   detect_binary_files_with_prefix: true
 
 requirements:
@@ -49,7 +49,8 @@ requirements:
   host:
     # Need python to run glib-mkenums.
     - python 3.12  # [win]
-    - boost-cpp {{ boost_cpp }}
+    # boost-python-devel is the new replacement for boost-cpp
+    - libboost-devel 1.88.0
     - cairo {{ cairo }}
     - curl {{ libcurl }}
     - fontconfig {{ fontconfig }}
@@ -89,7 +90,7 @@ outputs:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
       host:
-        - boost-cpp {{ boost_cpp }}
+        - libboost-devel 1.88.0
         - cairo {{ cairo }}
         - curl {{ libcurl }}
         - fontconfig {{ fontconfig }}  # [unix]
@@ -107,7 +108,6 @@ outputs:
         - openjpeg {{ openjpeg }}
         - zlib {{ zlib }}
       run:
-        - {{ pin_compatible('boost-cpp') }}
         - poppler-data
     files:
       - "Library/bin/poppler.dll"                      # [win]
