@@ -1,0 +1,8 @@
+# Needed for std::ranges::sort() and other C++20 features
+c_compiler_version:    # [osx]
+  - 17                 # [osx]
+cxx_compiler_version:  # [osx]
+  - 17                 # [osx]
+
+boost:
+  - 1.88
