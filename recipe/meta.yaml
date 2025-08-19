@@ -1,5 +1,5 @@
-{% set version = "24.09.0" %}
-{% set posix = 'm2-' if win else '' %}
+{% set version = "25.07.0" %}
+{% set posix = 'msys2-' if win else '' %}
 {% set native = 'm2w64-' if win else '' %}
 {% set prefix = 'Library/' if win else '' %}
 
@@ -9,7 +9,7 @@ package:
 
 source:
   - url: https://gitlab.freedesktop.org/poppler/poppler/-/archive/poppler-{{ version }}/poppler-poppler-{{ version }}.tar.bz2
-    sha256: dce88f84640b2a8592f7b9edbbefc563f584ef87fdf20359fa479367894f45df
+    sha256: 8c1ca818e0df06ad3a956fdb6362367bc810d4daababf135d232bb479dd04291
     patches:                            # [win]
       - exportsymbols.patch             # [win]
       - windows-data.patch              # [win]
@@ -18,13 +18,14 @@ source:
       # https://github.com/conda-forge/libtiff-feedstock/pull/51
       - disable-libtiff-win32-io.patch  # [win]
       - includesystembeforejpeg.patch   # [win]
+
   - url: https://gitlab.freedesktop.org/poppler/test/-/archive/master/test-master.tar.bz2  # [not win]
     # This sha256 is always new.
     sha256: c8572344d9d52a6a7392b0f0882e610d2eafb35667335877473621227ec95216               # [not win]
     folder: test_suite                                                                     # [not win]
 
 build:
-  number: 4
+  number: 0
   detect_binary_files_with_prefix: true
 
 requirements:
@@ -32,14 +33,9 @@ requirements:
     - {{ stdlib('c') }}
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - clang-format 14.0.6  # [osx]
-    # gobject-introspection 1.* requires setuptools at runtime, but
-    # setuptools >= 65.0.0 is lacking the msvccompiler module in distutils.
-    # https://github.com/pypa/setuptools/pull/3505
-    - setuptools <65
-    - binutils                           # [linux]
-    - m2-msys2-runtime                   # [win]
-    - m2-patch                           # [win]
+    - clang-format         # [osx]
+    - binutils             # [linux]
+    - msys2-msys2-runtime  # [win]
     - {{ native }}pkg-config
     - cmake
     - {{ posix }}make
@@ -47,10 +43,10 @@ requirements:
     - perl 5.*
     - gobject-introspection 1.78.*  # [not win]
   host:
-    # Need python to run glib-mkenums.
-    - python 3.12  # [win]
-    # boost-python-devel is the new replacement for boost-cpp
-    - libboost-devel 1.88.0
+    # Need python to run glib-mkenums but only one python to avoid incurring additional variants in the build matrix.
+    - python 3.12
+    # libboost-devel + libboost-headers + libboost is the new replacement for boost-cpp
+    - libboost-devel {{ boost }}
     - cairo {{ cairo }}
     - curl {{ libcurl }}
     - fontconfig {{ fontconfig }}
@@ -67,14 +63,12 @@ requirements:
     - openjpeg {{ openjpeg }}
     - zlib {{ zlib }}
     # qtbase-devel is not available for osx-64
-    - qtbase-devel 6  # [not (osx and x86_64)]
+    - qtbase-devel {{ qt }}  # [not (osx and x86_64)]
 
 outputs:
 
-{% set win_prefix = "" %}          # [not win]
-{% set win_suffix = "" %}          # [not win]
-{% set win_prefix = "Library/" %}  # [win]
-{% set win_suffix = ".exe" %}      # [win]
+{% set win_prefix = "Library/" if win else "" %}
+{% set win_suffix = ".exe" if win else "" %}
 
   - name: poppler
     build:
@@ -90,7 +84,7 @@ outputs:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
       host:
-        - libboost-devel 1.88.0
+        - libboost-devel {{ boost }}
         - cairo {{ cairo }}
         - curl {{ libcurl }}
         - fontconfig {{ fontconfig }}  # [unix]
@@ -180,6 +174,9 @@ about:
   dev_url: https://gitlab.freedesktop.org/poppler/poppler
 
 extra:
+  skip-lints:
+    - missing_hash
+    - remove_python_pinning  # On arch specific packages, python deps should not be constrained.
   feedstock-name: poppler
   recipe-maintainers:
     - katietz
