@@ -24,11 +24,9 @@ if [ -n "$OSX_ARCH" ] ; then
     export LDFLAGS_LD="$(echo $LDFLAGS_LD |sed -e "s/-dead_strip_dylibs//g")"
 fi
 
-if [ "$OSX_ARCH" == "x86_64" ]; then
-    export EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DENABLE_QT6=OFF"
-else
-    export EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DENABLE_QT6=ON"
-fi
+
+export EXTRA_CMAKE_ARGS="${EXTRA_CMAKE_ARGS} -DENABLE_QT6=ON"
+
 
 if [[ ${target_platform} == linux-ppc64le ]]; then
   # there are issues with CDTs and there HOST name ...

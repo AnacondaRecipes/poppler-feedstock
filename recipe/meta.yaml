@@ -1,15 +1,16 @@
-{% set version = "25.07.0" %}
+{% set name = "poppler" %}
+{% set version = "26.03.0" %}
 {% set posix = 'msys2-' if win else '' %}
 {% set native = 'm2w64-' if win else '' %}
 {% set prefix = 'Library/' if win else '' %}
 
 package:
-  name: poppler-split
+  name: {{ name }}-split
   version: {{ version }}
 
 source:
-  - url: https://gitlab.freedesktop.org/poppler/poppler/-/archive/poppler-{{ version }}/poppler-poppler-{{ version }}.tar.bz2
-    sha256: 8c1ca818e0df06ad3a956fdb6362367bc810d4daababf135d232bb479dd04291
+  - url: https://gitlab.freedesktop.org/{{ name }}/{{ name }}/-/archive/{{ name }}-{{ version }}/{{ name }}-{{ name }}-{{ version }}.tar.bz2
+    sha256: b22d3ce9628e900bf6f0bf817cc9e17bf58396faa5ffd427693f520dac4dfc0d
     patches:                            # [win]
       - exportsymbols.patch             # [win]
       - windows-data.patch              # [win]
@@ -21,7 +22,7 @@ source:
 
   - url: https://gitlab.freedesktop.org/poppler/test/-/archive/master/test-master.tar.bz2  # [not win]
     # This sha256 is always new.
-    sha256: c8572344d9d52a6a7392b0f0882e610d2eafb35667335877473621227ec95216               # [not win]
+    sha256: 7086eadb9da57642b7f1c7ed675cc5a08195d268278fe557521e22af0117d553               # [not win]
     folder: test_suite                                                                     # [not win]
 
 build:
@@ -39,9 +40,9 @@ requirements:
     - {{ native }}pkg-config
     - cmake
     - {{ posix }}make
-    - ninja
+    - ninja-base
     - perl 5.*
-    - gobject-introspection 1.78.*  # [not win]
+    - gobject-introspection 1.86.*  # [not win]
   host:
     # Need python to run glib-mkenums but only one python to avoid incurring additional variants in the build matrix.
     - python 3.12
@@ -62,15 +63,14 @@ requirements:
     - nss {{ nss }}  # [not win]
     - openjpeg {{ openjpeg }}
     - zlib {{ zlib }}
-    # qtbase-devel is not available for osx-64
-    - qtbase-devel {{ qt }}  # [not (osx and x86_64)]
+    - qtbase-devel {{ qt }}
 
 outputs:
 
 {% set win_prefix = "Library/" if win else "" %}
 {% set win_suffix = ".exe" if win else "" %}
 
-  - name: poppler
+  - name: {{ name }}
     build:
       missing_dso_whitelist:
         - $RPATH/libm.so.6
@@ -129,9 +129,8 @@ outputs:
         - pdfunite --help
         - pdftocairo --help
 
-  - name: poppler-qt
+  - name: {{ name }}-qt
     build:
-      skip: true  # [osx and x86_64]
       missing_dso_whitelist:
         - $RPATH/libm.so.6
         - $RPATH/libc.so.6
@@ -149,7 +148,7 @@ outputs:
         # Only dependencies actually needed by poppler-qt
         - freetype {{ freetype }}
         - lcms2 {{ lcms2 }}
-        - qtbase-devel 6
+        - qtbase-devel {{ qt }}
       run:
         - {{ pin_subpackage('poppler', exact=True) }}
     files:
