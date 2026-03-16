@@ -131,7 +131,6 @@ outputs:
 
   - name: {{ name }}-qt
     build:
-      skip: true  # [osx and x86_64]
       missing_dso_whitelist:
         - $RPATH/libm.so.6
         - $RPATH/libc.so.6
