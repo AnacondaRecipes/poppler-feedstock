@@ -1,0 +1,8 @@
+anaconda_config_version: 1
+upstream_sources:
+  - webpage:
+      url: https://poppler.freedesktop.org/releases.html
+      regex: (?:.*)poppler-(.*)\.tar\.xz
+    packages:
+      - poppler
+      - poppler-qt
