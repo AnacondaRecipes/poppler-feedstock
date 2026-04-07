@@ -1,0 +1,8 @@
+anaconda_config_version: 1
+upstream_sources:
+  - gitlab:
+      identifier: poppler/poppler
+      host: gitlab.freedesktop.org
+    packages:
+      - poppler
+      - poppler-qt
