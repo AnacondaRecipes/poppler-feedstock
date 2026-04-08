@@ -3,6 +3,7 @@ upstream_sources:
   - gitlab:
       identifier: poppler/poppler
       host: gitlab.freedesktop.org
+      use_max_tag: true
     packages:
       - poppler
       - poppler-qt
