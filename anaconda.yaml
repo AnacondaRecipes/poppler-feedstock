@@ -4,9 +4,9 @@ upstream_sources:
       identifier: poppler/poppler
       host: gitlab.freedesktop.org
       use_max_tag: true
-      exclude_regex: (?i)(?:^|[-._])(?:rc\d*|alpha\d*|beta\d*|pre\d+|preview|dev\d+)(?:[-._]|$)
-      from_pattern: ^v?(\d+(?:\.\d+)*.*)$
+      from_pattern: (?i)^poppler-(\d+(?:\.\d+)*)$
       to_pattern: \1
+      exclude_regex: (?i)(?:^|[-._])(?:rc\d*|alpha\d*|beta\d*|pre\d+|preview|dev\d+)(?:[-._]|$)
     packages:
       - poppler
       - poppler-qt
