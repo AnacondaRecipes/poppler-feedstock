@@ -1,5 +1,5 @@
 {% set name = "poppler" %}
-{% set version = "26.03.0" %}
+{% set version = "26.04.0" %}
 {% set posix = 'msys2-' if win else '' %}
 {% set native = 'm2w64-' if win else '' %}
 {% set prefix = 'Library/' if win else '' %}
@@ -10,7 +10,7 @@ package:
 
 source:
   - url: https://gitlab.freedesktop.org/{{ name }}/{{ name }}/-/archive/{{ name }}-{{ version }}/{{ name }}-{{ name }}-{{ version }}.tar.bz2
-    sha256: b22d3ce9628e900bf6f0bf817cc9e17bf58396faa5ffd427693f520dac4dfc0d
+    sha256: 07410324c4c133ea4bb2ecb135e37af586f7b06c8db59265b145d2fb067ecdb0
     patches:                            # [win]
       - exportsymbols.patch             # [win]
       - windows-data.patch              # [win]
