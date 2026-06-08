@@ -26,7 +26,7 @@ source:
     folder: test_suite                                                                     # [not win]
 
 build:
-  number: 0
+  number: 1
   detect_binary_files_with_prefix: true
 
 requirements:
@@ -54,7 +54,7 @@ requirements:
     - freetype {{ freetype }}
     - gettext {{ gettext }}  # [osx]
     - glib {{ glib }}
-    - jpeg {{ jpeg }}
+    - libjpeg-turbo {{ libjpeg_turbo }}
     - lcms2 {{ lcms2 }}
     - libcurl {{ libcurl }}
     - libiconv {{ libiconv }}
@@ -91,7 +91,7 @@ outputs:
         - freetype {{ freetype }}
         - gettext {{ gettext }}  # [osx]
         - glib {{ glib }}
-        - jpeg {{ jpeg }}
+        - libjpeg-turbo {{ libjpeg_turbo }}
         - lcms2 {{ lcms2 }}
         - libcurl {{ libcurl }}
         - libiconv {{ libiconv }}
