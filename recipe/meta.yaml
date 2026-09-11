@@ -21,7 +21,7 @@ source:
 
   - url: https://gitlab.freedesktop.org/poppler/test/-/archive/master/test-master.tar.bz2  # [not win]
     # This sha256 is always new.
-    sha256: 7086eadb9da57642b7f1c7ed675cc5a08195d268278fe557521e22af0117d553               # [not win]
+    sha256: 88b4271bf8b6ace6ab3d2f581d9ff40873468c63d86cf72fb866f92aea2dcadd               # [not win]
     folder: test_suite                                                                     # [not win]
 
 build:
